@@ -1,7 +1,8 @@
 spring:
   application:
     name: account-service
+
   cloud:
     config:
-      uri: http://localhost:8888/account-service
       fail-fast: true
+      uri: http://localhost:8888
