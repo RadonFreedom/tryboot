@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: auth-service
+
+logging:
+  level:
+   org.springframework.security: DEBUG
+
+server:
+  servlet:
+    context-path: /
+  port: 8079
+
+
+#  cloud:
+#    config:
+#      fail-fast: true
+#      uri: http://localhost:8888

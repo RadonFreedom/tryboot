@@ -21,6 +21,7 @@
         <module>registry</module>
         <module>config</module>
         <module>account-service</module>
+        <module>auth-service</module>
     </modules>
 
     <properties>
@@ -32,6 +33,11 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
 
         <dependency>
