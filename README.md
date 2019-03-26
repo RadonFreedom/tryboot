@@ -4,16 +4,18 @@ fre.shown.tryboot 用户后台管理系统采用[微服务](https://martinfowler
 
 **本项目正在开发中。**
 
+
+
 ## 架构划分
 
-| 服务（子项目）名称 |                功能简述                |
-| :----------------: | :------------------------------------: |
-|       config       |  配置中心：Spring Cloud Config Server  |
-|      registry      |    注册中心：Netflix Eureka Server     |
-|    api-gateway     |               网关：Zuul               |
-|  account-service   |                账户服务                |
-|    auth-service    | Oauth2认证服务: Spring Security Oauth2 |
-|        cdn         |  独立部署, 为项目静态资源提供CDN服务   |
+| 服务（子项目）名称 |               功能简述               |
+| :----------------: | :----------------------------------: |
+|       config       | 配置中心：Spring Cloud Config Server |
+|      registry      |   注册中心：Netflix Eureka Server    |
+|    api-gateway     |              网关：Zuul              |
+|  account-service   |               账户服务               |
+|    auth-service    |      认证服务: Spring Security       |
+|        cdn         | CDN服务: 为静态资源提供CDN, 独立部署 |
 
 
 
@@ -27,5 +29,3 @@ fre.shown.tryboot 用户后台管理系统采用[微服务](https://martinfowler
 
 - 如果 registry 启动时需要从 config 中拉取所需配置，那么应该先启动 config，那么config启动时自然是无法注册到注册中心的。
 - 反之，如果config启动时想要注册到注册中心，那么注册中心必须比config先启动，因此注册中心启动时无法从config中拉取配置。
-
-### 
