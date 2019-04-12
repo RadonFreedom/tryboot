@@ -2,7 +2,25 @@ spring:
   application:
     name: api-gateway
 
-  cloud:
-    config:
-      fail-fast: true
-      uri: http://localhost:8888
+#  cloud:
+#    config:
+#      fail-fast: true
+#      uri: http://localhost:8888
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8763/eureka/
+
+zuul:
+  ignoredServices: '*'
+  host:
+    connect-timeout-millis: 20000
+    socket-timeout-millis: 20000
+
+  routes:
+      path: /auth/**
+      ser: account-service
+
+server:
+  port: 4000

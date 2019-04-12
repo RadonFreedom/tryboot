@@ -12,16 +12,16 @@
     <groupId>fre.shown.tryboot</groupId>
     <artifactId>tryboot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>tryboot</name>
-    <description>tryboot 后台管理系统</description>
 
     <packaging>pom</packaging>
+
     <modules>
-        <module>api-gateway</module>
-        <module>registry</module>
-        <module>config</module>
-        <module>account-service</module>
         <module>auth-service</module>
+        <module>config</module>
+        <module>registry1</module>
+        <module>registry2</module>
+        <module>api-gateway</module>
+        <module>account-service</module>
     </modules>
 
     <properties>
@@ -38,6 +38,12 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <dependency>

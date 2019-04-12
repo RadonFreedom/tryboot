@@ -2,17 +2,52 @@ spring:
   application:
     name: auth-service
 
-logging:
-  level:
-   org.springframework.security: DEBUG
-
 server:
-  servlet:
-    context-path: /
-  port: 8079
+  port: 5000
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8763/eureka/
 
 #  cloud:
 #    config:
 #      fail-fast: true
 #      uri: http://localhost:8888
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+security:
+  oauth2:
+    server:
+      enable-jwt-token: false
+
+      clients:
+        # 客户端名, 这个名字是无用的, 最后只会取值
+        client:
+          # client-id中的名字是有用的
+          client-id: client
+          secret: radon
+          authorized-grant-types:
+            - authorization_code
+            - refresh_token
+          redirectUris: /redirect
+          scopes: client
+
+        web:
+          client-id: web
+          secret: radon
+          authorized-grant-types:
+            - password
+            - refresh_token
+          scopes: ui
+
+        account-service:
+          client-id: account-service
+          secret: radon
+          authorized-grant-types:
+            - client_credentials
+            - refresh_token
+          scopes: server
