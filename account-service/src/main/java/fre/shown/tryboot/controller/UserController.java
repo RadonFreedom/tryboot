@@ -17,6 +17,7 @@ public class UserController {
 
     public UserController(AuthServiceClient authServiceClient) {
         this.authServiceClient = authServiceClient;
+        System.out.println(authServiceClient.user());
     }
 
     @GetMapping("/")
