@@ -1,0 +1,33 @@
+#  cloud:
+#    config:
+#      fail-fast: true
+#      uri: http://localhost:8888
+
+spring:
+  application:
+    name: account-service
+
+server:
+  port: 8600
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8763/eureka/
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.cloud.openfeign: DEBUG
+
+security:
+  oauth2:
+    client:
+      client-id: account-service
+      authorized-grant-types:
+        - client_credentials
+        - refresh_token
+      client-secret: radon
+      scope: server
+      access-token-uri: http://localhost:5000/oauth/token

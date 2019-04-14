@@ -6,15 +6,19 @@ server:
   port:
     8763
 
+logging:
+  level:
+    com.netflix.eureka: DEBUG
 
 eureka:
   instance:
     prefer-ip-address: true
     hostname: registry1
   client:
-    service-url:
-      defaultZone: http://127.0.0.1:8762/eureka/
-
+#    service-url:
+#      defaultZone: http://127.0.0.1:8762/eureka/
+    fetch-registry: false
+    register-with-eureka: false
 
 
 

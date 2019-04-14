@@ -22,6 +22,7 @@
         <module>registry2</module>
         <module>api-gateway</module>
         <module>account-service</module>
+        <module>common</module>
     </modules>
 
     <properties>
@@ -33,6 +34,12 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>fre.shown.tryboot</groupId>
+            <artifactId>common</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
