@@ -14,7 +14,7 @@ tryboot 项目采用[微服务架构 (microservice)](https://martinfowler.com/ar
 ### 基础设施
 
 -  搭建集群 eureka 服务器完成
-- 搭建认证服务器完成, 使用 Spring cloud security
+- 搭建oatuh2认证服务器完成, 使用 spring cloud security
 
 ### 业务
 
