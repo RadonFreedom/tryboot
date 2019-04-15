@@ -1,6 +1,6 @@
 # tryboot
 
-tryboot 项目采用[微服务架构 (microservice)](https://martinfowler.com/articles/microservices.html) 搭建，使用 spring boot, spring cloud 技术栈。
+tryboot 项目采用 [微服务架构 (microservice)](https://martinfowler.com/articles/microservices.html) 搭建，使用 spring boot, spring cloud 技术栈。
 
 本项目旨在提供一个快速的微服务架构开发起点。
 
