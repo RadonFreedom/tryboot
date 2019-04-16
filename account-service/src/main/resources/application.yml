@@ -14,12 +14,14 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8763/eureka/
+      defaultZone: http://47.107.38.165:8763/eureka/
 
 logging:
   level:
-    org.springframework.security: DEBUG
+#    org.springframework.security: DEBUG
     org.springframework.cloud.openfeign: DEBUG
+    com.netflix.loadbalancer: DEBUG
+    com.netflix.ribbon: DEBUG
 
 security:
   oauth2:

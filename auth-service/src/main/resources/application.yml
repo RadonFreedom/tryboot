@@ -9,7 +9,7 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8763/eureka/
+      defaultZone: http://47.107.38.165:8762/eureka/
 
 #  cloud:
 #    config:

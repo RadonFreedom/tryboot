@@ -18,8 +18,7 @@
     <modules>
         <module>auth-service</module>
         <module>config</module>
-        <module>registry1</module>
-        <module>registry2</module>
+        <module>registry</module>
         <module>api-gateway</module>
         <module>account-service</module>
         <module>common</module>
@@ -34,12 +33,6 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>fre.shown.tryboot</groupId>
-            <artifactId>common</artifactId>
-            <version>${project.version}</version>
         </dependency>
 
         <dependency>
@@ -68,6 +61,12 @@
                 <version>${spring-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>fre.shown.tryboot</groupId>
+                <artifactId>common</artifactId>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
