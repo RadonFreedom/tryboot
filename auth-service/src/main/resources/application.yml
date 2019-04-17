@@ -1,15 +1,21 @@
 spring:
   application:
     name: auth-service
+  redis:
+    host: 47.107.38.165
+
 
 server:
   port: 5000
-
 
 eureka:
   client:
     service-url:
       defaultZone: http://47.107.38.165:8762/eureka/
+
+  instance:
+    prefer-ip-address: true
+    ip-address: 47.107.38.165
 
 #  cloud:
 #    config:
@@ -26,7 +32,6 @@ security:
   oauth2:
     server:
       enable-jwt-token: false
-
       clients:
         # 客户端名, 这个名字是无用的, 最后只会取值
         client:

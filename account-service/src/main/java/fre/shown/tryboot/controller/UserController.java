@@ -2,6 +2,7 @@ package fre.shown.tryboot.controller;
 
 import fre.shown.tryboot.client.AuthServiceClient;
 import fre.shown.tryboot.domain.User;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,9 +18,10 @@ public class UserController {
 
     public UserController(AuthServiceClient authServiceClient) {
         this.authServiceClient = authServiceClient;
-        System.out.println(authServiceClient.user());
+        authServiceClient.user();
     }
 
+    @PreAuthorize("#oauth2.hasScope('ui')")
     @GetMapping("/")
     public User user() {
         return authServiceClient.user();
