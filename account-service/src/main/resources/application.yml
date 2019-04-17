@@ -17,13 +17,12 @@ eureka:
 
 logging:
   level:
-#    org.springframework.security: DEBUG
-    com.netflix: DEBUG
+    org.springframework.security: DEBUG
+#    com.netflix: DEBUG
 
 
 security:
   oauth2:
-
     client:
       client-id: account-service
       authorized-grant-types:
@@ -32,5 +31,6 @@ security:
       client-secret: radon
       scope: server
       access-token-uri: http://47.107.38.165:5000/oauth/token
+
     resource:
       token-info-uri: http://47.107.38.165:5000/oauth/check_token

@@ -15,7 +15,6 @@ import org.springframework.security.oauth2.client.token.grant.client.ClientCrede
 
 @Configuration
 public class Oauth2ClientConfig {
-
     @Bean
     @ConfigurationProperties(prefix = "security.oauth2.client")
     public ClientCredentialsResourceDetails clientCredentialsResourceDetails() {

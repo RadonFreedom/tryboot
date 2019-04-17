@@ -18,10 +18,9 @@ public class UserController {
 
     public UserController(AuthServiceClient authServiceClient) {
         this.authServiceClient = authServiceClient;
-        authServiceClient.user();
     }
 
-    @PreAuthorize("#oauth2.hasScope('ui')")
+    @PreAuthorize("#oauth2.throwOnError(#oauth2.hasScope('ui') and hasAnyAuthority('USER'))")
     @GetMapping("/")
     public User user() {
         return authServiceClient.user();
