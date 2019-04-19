@@ -34,8 +34,8 @@ import java.util.Map;
  *             - refresh_token
  *           scopes: ui
  *
- *         account-service:
- *           client-id: account-service
+ *         username-service:
+ *           client-id: username-service
  *           secret: radon
  *           authorized-grant-types:
  *             - client_credentials

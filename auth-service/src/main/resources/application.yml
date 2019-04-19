@@ -1,9 +1,22 @@
 spring:
   application:
     name: auth-service
+
   redis:
     host: 47.107.38.165
 
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/auth_service
+    username: radon
+    password: radon
+
+mybatis:
+  mapper-locations: classpath:mapper/**
+  configuration:
+    map-underscore-to-camel-case: true
+    use-generated-keys: true
+    jdbc-type-for-null: NULL
 
 server:
   port: 5000
@@ -33,6 +46,30 @@ security:
     server:
       enable-jwt-token: false
       clients:
+        ui:
+          client-id: ui
+          secret: radon
+          authorized-grant-types:
+            - client_credentials
+            - refresh_token
+          scopes: ui
+
+        user:
+          client-id: user
+          secret: radon
+          authorized-grant-types:
+            - password
+            - refresh_token
+          scopes: ui
+
+        username-service:
+          client-id: username-service
+          secret: radon
+          authorized-grant-types:
+            - client_credentials
+            - refresh_token
+          scopes: server
+
         # 客户端名, 这个名字是无用的, 最后只会取值
         client:
           # client-id中的名字是有用的
@@ -43,20 +80,3 @@ security:
             - refresh_token
           redirectUris: /redirect
           scopes: client
-
-        web:
-          client-id: web
-          secret: radon
-          authorized-grant-types:
-            - password
-            - refresh_token
-          scopes: ui
-
-        account-service:
-          client-id: account-service
-          secret: radon
-          authorized-grant-types:
-            - client_credentials
-            - refresh_token
-          scopes: server
-

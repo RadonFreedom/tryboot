@@ -1,8 +1,8 @@
-package fre.shown.tryboot.client;
+package tryboot.client;
 
-import fre.shown.tryboot.domain.User;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import tryboot.domain.UserDTO;
 
 /**
  * @author Radon Freedom
@@ -13,5 +13,5 @@ import org.springframework.web.bind.annotation.GetMapping;
 public interface AuthServiceClient {
 
     @GetMapping("/user")
-    User user();
+    UserDTO user();
 }

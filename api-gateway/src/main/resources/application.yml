@@ -1,7 +1,18 @@
 spring:
   application:
     name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: account-service
+          uri: lb://account-service/
+          predicates:
+            - Path=/user/**
+          filters:
+            - StripPrefix=1
 
+server:
+  port: 4000
 #  cloud:
 #    config:
 #      fail-fast: true
@@ -12,15 +23,7 @@ eureka:
     serviceUrl:
       defaultZone: http://47.107.38.165:8763/eureka/
 
-zuul:
-  ignoredServices: '*'
-  host:
-    connect-timeout-millis: 20000
-    socket-timeout-millis: 20000
-
-  routes:
-      path: /auth/**
-      ser: account-service
-
-server:
-  port: 4000
+logging:
+  level:
+    #    com.netflix.discovery: DEBUG
+    org.springframework.cloud.gateway: DEBUG
