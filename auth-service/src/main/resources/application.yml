@@ -2,8 +2,9 @@ spring:
   application:
     name: auth-service
 
-  redis:
-    host: 47.107.38.165
+# 实际部署为本地redis
+#  redis:
+#    host: 47.107.38.165
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -35,27 +36,18 @@ eureka:
 #      fail-fast: true
 #      uri: http://localhost:8888
 
-# 为了查看DiscoveryClient中的日志
-logging:
-  level:
+
+#logging:
+#  level:
 #    com.netflix.discovery: DEBUG
-    org.springframework.security: DEBUG
+#    org.springframework.security: DEBUG
 
 security:
   oauth2:
     server:
-      enable-jwt-token: false
       clients:
         ui:
           client-id: ui
-          secret: radon
-          authorized-grant-types:
-            - client_credentials
-            - refresh_token
-          scopes: ui
-
-        user:
-          client-id: user
           secret: radon
           authorized-grant-types:
             - password
@@ -63,20 +55,20 @@ security:
           scopes: ui
 
         username-service:
-          client-id: username-service
+          client-id: order-service
           secret: radon
           authorized-grant-types:
             - client_credentials
             - refresh_token
           scopes: server
 
-        # 客户端名, 这个名字是无用的, 最后只会取值
-        client:
-          # client-id中的名字是有用的
-          client-id: client
-          secret: radon
-          authorized-grant-types:
-            - authorization_code
-            - refresh_token
-          redirectUris: /redirect
-          scopes: client
+#        # 客户端名, 这个名字是无用的, 最后只会取值
+#        client:
+#          # client-id中的名字是有用的
+#          client-id: client
+#          secret: radon
+#          authorized-grant-types:
+#            - authorization_code
+#            - refresh_token
+#          redirectUris: /redirect
+#          scopes: client

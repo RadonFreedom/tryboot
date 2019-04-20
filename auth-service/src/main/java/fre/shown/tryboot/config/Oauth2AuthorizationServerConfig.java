@@ -1,12 +1,14 @@
 package fre.shown.tryboot.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.builders.ClientDetailsServiceBuilder;
 import org.springframework.security.oauth2.config.annotation.builders.InMemoryClientDetailsServiceBuilder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -26,7 +28,7 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
 @EnableAuthorizationServer
 @EnableConfigurationProperties(Oauth2ServerClientsProperties.class)
 @Configuration
-public class Oauth2ServerConfig extends AuthorizationServerConfigurerAdapter {
+public class Oauth2AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
 
     private final AuthenticationManager authenticationManager;
@@ -34,7 +36,7 @@ public class Oauth2ServerConfig extends AuthorizationServerConfigurerAdapter {
     private final TokenStore tokenStore;
 
     @Autowired
-    public Oauth2ServerConfig(AuthenticationManager authenticationManager, Oauth2ServerClientsProperties oauth2ServerClientsProperties, TokenStore tokenStore) {
+    public Oauth2AuthorizationServerConfig(AuthenticationManager authenticationManager, Oauth2ServerClientsProperties oauth2ServerClientsProperties, TokenStore tokenStore) {
         this.authenticationManager = authenticationManager;
         this.oauth2ServerClientsProperties = oauth2ServerClientsProperties;
         this.tokenStore = tokenStore;
@@ -46,7 +48,8 @@ public class Oauth2ServerConfig extends AuthorizationServerConfigurerAdapter {
                 //url:/oauth/token_key,exposes public key for token verification if using JWT tokens
                 .tokenKeyAccess("permitAll()")
                 //url:/oauth/check_token allow check token
-                .checkTokenAccess("isAuthenticated()");
+                .checkTokenAccess("isAuthenticated()")
+                .passwordEncoder(inMemoryClientDetailsPasswordEncoder());
     }
 
     @Override
@@ -77,6 +80,26 @@ public class Oauth2ServerConfig extends AuthorizationServerConfigurerAdapter {
         }
     }
 
+    /**
+     * inMemoryClientDetailsPasswordEncoder只应该在这个类中, 不应被其他类拿到.
+     *
+     * @return inMemoryClientDetailsPasswordEncoder
+     */
+    private PasswordEncoder inMemoryClientDetailsPasswordEncoder() {
+        return new PasswordEncoder() {
+            @Override
+            public String encode(CharSequence rawPassword) {
+                return rawPassword.toString();
+            }
+
+            @Override
+            public boolean matches(CharSequence rawPassword, String encodedPassword) {
+
+                return encodedPassword != null && encodedPassword.equals(rawPassword.toString());
+            }
+        };
+    }
+
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
 
@@ -87,13 +110,25 @@ public class Oauth2ServerConfig extends AuthorizationServerConfigurerAdapter {
     }
 
     @Configuration
-    public static class TokenStoreConfig {
-
-        @ConditionalOnProperty(name = "security.oauth2.server.enable-jwt-token", havingValue = "false")
+    public static class NecessaryBeansConfig extends WebSecurityConfigurerAdapter {
         @Bean
         @Autowired
-        public TokenStore redisTokenStore(RedisConnectionFactory redisConnectionFactory) {
+        public RedisTokenStore redisTokenStore(RedisConnectionFactory redisConnectionFactory) {
             return new RedisTokenStore(redisConnectionFactory);
+        }
+
+        /**
+         * 为password grant Oauth2认证提供密码加密
+         */
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+            return new BCryptPasswordEncoder();
+        }
+
+        @Override
+        @Bean
+        public AuthenticationManager authenticationManagerBean() throws Exception {
+            return super.authenticationManagerBean();
         }
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,9 +23,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private static final Integer DEFAULT_PAGE_NUM = 1;
     private static final Integer DEFAULT_PAGE_SIZE = 16;
     private final UserDAO userDAO;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserDAO userDAO) {
+    public UserServiceImpl(UserDAO userDAO, PasswordEncoder passwordEncoder) {
         this.userDAO = userDAO;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -74,8 +77,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         try {
             userDO.setCreateTime(DateUtils.getCurrentTime());
+            String encodedPassword = passwordEncoder.encode(userDO.getPassword());
+            userDO.setPassword(encodedPassword);
             userDAO.addUser(userDO);
         } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
             return false;
         }
         return true;

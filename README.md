@@ -10,14 +10,14 @@ tryboot 项目采用 [微服务架构 (microservice)](https://martinfowler.com/a
 
 请点击端口查看部署实例 !
 
-|     服务名      |          功能简述           |                           部署端口                           | 实例个数 |
-| :-------------: | :-------------------------: | :----------------------------------------------------------: | :------: |
-|    registry     |     Eureka注册中心集群      | [8762](http://47.107.38.165:8763), [8763](http://47.107.38.165:8763) |    2     |
-|  auth-service   |          认证服务           |                             5000                             |    1     |
-|   api-gateway   |          Zuul网关           |                              80                              |    1     |
-| account-service |        用户信息服务         |                             8600                             |    1     |
-|     config      | Spring Cloud Config配置中心 |                             8888                             |    1     |
-|       cdn       | 为静态资源提供CDN, 独立部署 |              [8081](http://47.107.38.165:8081)               |    1     |
+|    服务名     |          功能简述           |                           部署端口                           | 实例个数 |
+| :-----------: | :-------------------------: | :----------------------------------------------------------: | :------: |
+|  api-gateway  |  Spring Cloud Gateway网关   |                [80](http://47.107.38.165:80)                 |    1     |
+|   registry    |     Eureka注册中心集群      | [8762](http://47.107.38.165:8763), [8763](http://47.107.38.165:8763) |    2     |
+| auth-service  |          认证服务           |              [5000](http://47.107.38.165:5000)               |    1     |
+| order-service |          订单服务           |                             8600                             |    1     |
+|    config     | Spring Cloud Config配置中心 |                             8888                             |    1     |
+|      cdn      | 为静态资源提供CDN, 独立部署 |              [8081](http://47.107.38.165:8081)               |    1     |
 
 示意图如下所示: 
 
@@ -142,13 +142,53 @@ Feign 是基于`RestTemplate` 的声明式RESTful Http API (用户提供接口, 
   }
 ```
 
+### 资源服务器搭建
+
+- `@EnableResourceServer`启动了`OAuth2AuthenticationProcessingFilter`过滤器来处理请求中的token.
+
+- `@EnableResourceServer`使`WebSecurityConfigurerAdapter`中的HTTP安全配置失效, 必须继承`ResourceServerConfigurerAdapter`来配置HTTP安全, 并且由于是在`OAuth2AuthenticationProcessingFilter`之后的过滤器中再代理给controller方法的前置授权, 它具有更高的优先级.
+
+- `@EnableGlobalMethodSecurity(prePostEnabled = true)`启动了controller方法的前置授权, 原理是CGLIB代理.
+
+```java
+@EnableResourceServer
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableWebSecurity(debug = true)
+@Configuration
+public class Oauth2ServerConfig extends ResourceServerConfigurerAdapter {
+
+}
+```
 
 
-### TODO Zuul 网关搭建
+
+### Spring Cloud Gateway 网关搭建
+
+routes有order域, 可以设置优先级.
+
+如果请求满足某个route的断言`Predicate`, 将会被路由到它的URI.
+
+```YML
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service
+          uri: lb://auth-service/
+          predicates:
+            - Path=/auth/**
+
+        - id: order-service
+          uri: lb://order-service/
+          predicates:
+            - Path=/order/**
+```
 
 
 
-### TODO Web端认证
+### Web端认证
 
 
 

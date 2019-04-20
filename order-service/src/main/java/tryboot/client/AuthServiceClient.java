@@ -2,6 +2,7 @@ package tryboot.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import tryboot.domain.UserDTO;
 
 /**
@@ -12,6 +13,6 @@ import tryboot.domain.UserDTO;
 @FeignClient("auth-service")
 public interface AuthServiceClient {
 
-    @GetMapping("/user")
-    UserDTO user();
+    @GetMapping("auth/user/{username}")
+    UserDTO userData(@PathVariable("username") String username);
 }

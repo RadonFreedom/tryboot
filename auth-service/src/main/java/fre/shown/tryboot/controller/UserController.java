@@ -26,9 +26,8 @@ public class UserController {
         return userService.getUserDataByUsername(username);
     }
 
-    @PostMapping("auth/user/add")
-    @PreAuthorize("permitAll()")
-    public Boolean addUser(UserDO userDO) {
+    @PostMapping("auth/register")
+    public Boolean addUser(@RequestBody UserDO userDO) {
         return userService.addUser(userDO);
     }
 }

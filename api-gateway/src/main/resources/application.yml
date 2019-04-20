@@ -4,13 +4,15 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: account-service
-          uri: lb://account-service/
+        - id: auth-service
+          uri: lb://auth-service/
           predicates:
-            - Path=/user/**
-          filters:
-            - StripPrefix=1
+            - Path=/auth/**
 
+        - id: order-service
+          uri: lb://order-service/
+          predicates:
+            - Path=/order/**
 server:
   port: 4000
 #  cloud:
@@ -21,7 +23,7 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://47.107.38.165:8763/eureka/
+      defaultZone: http://47.107.38.165:8763/eureka/, http://47.107.38.165:8762/eureka/
 
 logging:
   level:
