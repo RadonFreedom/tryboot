@@ -1,4 +1,4 @@
-package tryboot.domain;
+package fre.shown.tryboot.domain;
 
 /**
  * @author Radon Freedom

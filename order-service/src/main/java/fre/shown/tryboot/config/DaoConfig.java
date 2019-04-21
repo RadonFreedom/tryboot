@@ -1,4 +1,4 @@
-package tryboot.config;
+package fre.shown.tryboot.config;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Configuration;

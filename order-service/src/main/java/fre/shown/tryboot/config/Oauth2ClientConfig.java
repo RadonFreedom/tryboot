@@ -1,4 +1,4 @@
-package tryboot.config;
+package fre.shown.tryboot.config;
 
 import feign.RequestInterceptor;
 import org.springframework.boot.context.properties.ConfigurationProperties;

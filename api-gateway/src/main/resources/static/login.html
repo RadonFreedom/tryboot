@@ -29,7 +29,7 @@
                             <input id="login-password" type="password" name="password" class="lowin-input">
                         </label>
                     </div>
-                    <button onclick="dologin()" class="lowin-btn" type="button">
+                    <button onclick="login()" class="lowin-btn" type="button">
                         Sign In
                     </button>
 
@@ -62,7 +62,7 @@
                             <input id="signup-password" type="password" name="password" class="lowin-input">
                         </label>
                     </div>
-                    <button class="lowin-btn" type="button">
+                    <button onclick="register()" class="lowin-btn" type="button">
                         Sign Up
                     </button>
 
@@ -82,44 +82,11 @@
 <script src="http://47.107.38.165:8081/jquery/jquery-2.1.1.min.js"></script>
 <script src="http://47.107.38.165:8081/bootstrap/js/bootstrap.min.js"></script>
 <script src="http://47.107.38.165:8081/layer/layer.js"></script>
+<script src="js/oauth2.js"></script>
+<script src="js/login.js"></script>
 
 <script>
     Auth.init();
-    function dologin() {
-        //字符串非空校验
-        var username = $("#login-username").val();
-        if (username === "") {
-            layer.msg("用户账号不能为空，请输入", {time: 1000, icon: 0, shift: 5});
-            return;
-        }
-        var password = $("#login-password").val();
-        if (password === "") {
-            layer.msg("登录密码不能为空，请输入", {time: 1000, icon: 0, shift: 5});
-            return;
-        }
-
-        var holder = null;
-        //提交表单
-        $.ajax({
-            type: "POST",
-            url: "doLogin",
-            data: {
-                username: username,
-                password: password
-            },
-            beforeSend: function () {
-                holder = layer.msg("处理中...", {icon: 16});
-            },
-            success: function (result) {
-                layer.close(holder);
-                if (result === true) {
-                    window.location.href = "test";
-                } else {
-                    layer.msg("用户名不存在或密码错误!", {time: 1000, icon: 2, shift: 6});
-                }
-            }
-        });
-    }
 </script>
 </body>
 </html>

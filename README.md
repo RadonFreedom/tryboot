@@ -12,7 +12,7 @@ tryboot 项目采用 [微服务架构 (microservice)](https://martinfowler.com/a
 
 |    服务名     |          功能简述           |                           部署端口                           | 实例个数 |
 | :-----------: | :-------------------------: | :----------------------------------------------------------: | :------: |
-|  api-gateway  |  Spring Cloud Gateway网关   |                [80](http://47.107.38.165:80)                 |    1     |
+|  api-gateway  |  Spring Cloud Gateway网关   |                              80                              |    1     |
 |   registry    |     Eureka注册中心集群      | [8762](http://47.107.38.165:8763), [8763](http://47.107.38.165:8763) |    2     |
 | auth-service  |          认证服务           |              [5000](http://47.107.38.165:5000)               |    1     |
 | order-service |          订单服务           |                             8600                             |    1     |

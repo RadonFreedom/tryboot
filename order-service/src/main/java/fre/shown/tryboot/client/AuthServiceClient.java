@@ -1,9 +1,9 @@
-package tryboot.client;
+package fre.shown.tryboot.client;
 
+import fre.shown.tryboot.domain.UserDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import tryboot.domain.UserDTO;
 
 /**
  * @author Radon Freedom

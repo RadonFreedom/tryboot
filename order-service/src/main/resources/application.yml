@@ -14,7 +14,7 @@ spring:
     password: radon
 
 mybatis:
-  mapper-locations: classpath:mapper/**
+  mapper-locations: classpath:mapper/*
   configuration:
     map-underscore-to-camel-case: true
     use-generated-keys: true
