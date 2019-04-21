@@ -2,7 +2,7 @@
 
 tryboot 项目采用 [微服务架构 (microservice)](https://martinfowler.com/articles/microservices.html) 搭建，使用 spring boot, spring cloud 技术栈。
 
-本项目旨在提供一个快速的微服务架构开发起点。
+本项目构造了一个微服务的最小系统。
 
 
 
@@ -25,7 +25,7 @@ tryboot 项目采用 [微服务架构 (microservice)](https://martinfowler.com/a
 
 
 
-## 开发过程记录
+## 开发过程
 
 ### 搭建 eureka 服务器集群
 
@@ -58,7 +58,7 @@ eureka:
 
 
 
-### 搭建oatuh2认证服务器
+### 搭建Oatuh2认证服务器
 
 使用默认的 oauth2 token 实现, 随机的 token 作为 key 值被存储在 Redis 中, value 存储的是对应这个 token 的认证信息.
 
@@ -109,7 +109,9 @@ eureka:
 
 
 
-### 服务端的认证
+### 搭建Oauth2客户端
+
+#### 微服务的认证
 
 当微服务使用 Feign 调用其他微服务时, 需要首先向认证服务器获取token.
 
@@ -142,13 +144,17 @@ Feign 是基于`RestTemplate` 的声明式RESTful Http API (用户提供接口, 
   }
 ```
 
-### 资源服务器搭建
+#### Web端认证
+
+Web端认证将使用 JavaScript 实现, 将token保存在浏览器内存中.
+
+### 搭建资源服务器
 
 - `@EnableResourceServer`启动了`OAuth2AuthenticationProcessingFilter`过滤器来处理请求中的token.
 
-- `@EnableResourceServer`使`WebSecurityConfigurerAdapter`中的HTTP安全配置失效, 必须继承`ResourceServerConfigurerAdapter`来配置HTTP安全, 并且由于是在`OAuth2AuthenticationProcessingFilter`之后的过滤器中再代理给controller方法的前置授权, 它具有更高的优先级.
+- `@EnableResourceServer`使`WebSecurityConfigurerAdapter`中的HTTP安全配置失效,, 因为其引入了一个继承了`WebSecurityConfigurerAdapter`的`ResourceServerConfiguration`. 故用户必须继承`ResourceServerConfigurerAdapter`来配置HTTP安全, 并且由于是在`OAuth2AuthenticationProcessingFilter`之后的过滤器中再代理给controller方法的前置授权, 它具有更高的优先级.
 
-- `@EnableGlobalMethodSecurity(prePostEnabled = true)`启动了controller方法的前置授权, 原理是CGLIB代理.
+- `@EnableGlobalMethodSecurity(prePostEnabled = true)`启动了controller方法的前置与后置授权, 原理是CGLIB代理.
 
 ```java
 @EnableResourceServer
@@ -188,11 +194,9 @@ spring:
 
 
 
-### Web端认证
 
 
-
-## 问题记录
+## 问题
 
 ### 原始类型与包装类型造成的 NPE
 
@@ -250,7 +254,23 @@ public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 
 
 
-## 部署过程记录
+## 部署
+
+本项目在本人的阿里云服务器上进行部署.
+
+### 为什么不使用 docker?
+
+DOCKER主要是解决了多依赖的部署环境下的自动部署问题. 由于项目依赖的环境相对简单(JDK, Redis, MySQL), 所以没有考虑使用DOCKER进行部署.
+
+### 部署解决方案
+
+比较简单粗暴.
+
+1. 使用`sshfs`远程挂载服务器文件系统, `ssh`远程连接到命令行.
+
+2. 使用maven进行打包, 完成后将jar包copy到服务器上.
+
+3. 在服务器命令行上使用`java -jar &`命令来启动服务.
 
 
 
