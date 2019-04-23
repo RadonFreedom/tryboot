@@ -37,10 +37,10 @@ eureka:
 #      uri: http://localhost:8888
 
 
-#logging:
-#  level:
+logging:
+  level:
 #    com.netflix.discovery: DEBUG
-#    org.springframework.security: DEBUG
+    org.springframework.security: DEBUG
 
 security:
   oauth2:

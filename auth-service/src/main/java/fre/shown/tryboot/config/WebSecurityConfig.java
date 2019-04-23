@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
  * 因为{@link org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration ResourceServerConfiguration}
  * 已经覆盖了{@link WebSecurityConfigurerAdapter},
  * 所以我们只能用{@link ResourceServerConfigurerAdapter}来修改其安全配置.
+ *
  * @author Radon Freedom
  * created at 2019.03.25 下午7:27
  */
@@ -21,11 +22,14 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 @Configuration
 public class WebSecurityConfig extends ResourceServerConfigurerAdapter {
 
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
+
+        //do nothing by default cause we want to use preGlobalMethodSecurity
         http
                 .authorizeRequests()
-                .antMatchers("auth/register")
+                .antMatchers("/register")
                 .permitAll();
     }
 }

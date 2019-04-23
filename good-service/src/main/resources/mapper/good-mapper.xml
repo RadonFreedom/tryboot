@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fre.shown.tryboot.dao.GoodDAO">
+
+    <resultMap id="seckill_good" type="fre.shown.tryboot.domain.SeckillGoodDTO">
+
+        <id column="seckill_good_id" property="id"/>
+        <result column="seckill_price" property="seckillPrice"/>
+        <result column="stock_count" property="stockCount"/>
+        <result column="start_date" property="startDate"/>
+        <result column="end_date" property="endDate"/>
+        <association property="goodDO" resultMap="good"/>
+    </resultMap>
+
+    <resultMap id="good" type="fre.shown.tryboot.domain.GoodDO">
+        <id column="good_id" property="id"/>
+        <result column="good_name" property="goodName"/>
+        <result column="good_title" property="goodTitle"/>
+        <result column="good_img" property="goodImg"/>
+        <result column="good_detail" property="goodDetail"/>
+        <result column="good_price" property="goodPrice"/>
+        <result column="good_stock" property="goodStock"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+    </resultMap>
+
+    <!--    List<SeckillGoodDTO> getSeckillGoodsAsList();-->
+    <select id="getSeckillGoodsAsList" resultMap="seckill_good">
+        select good.id         as good_id,
+               good.good_name,
+               good.good_title,
+               good.good_img,
+               good.good_detail,
+               good.good_price,
+               good.good_stock,
+               good.gmt_create,
+               good.gmt_modified,
+
+               seckill_good.id as seckill_good_id,
+               seckill_good.seckill_price,
+               seckill_good.stock_count,
+               seckill_good.start_date,
+               seckill_good.end_date
+        from good,
+             seckill_good
+        where seckill_good.good_id = good.id;
+    </select>
+
+    <!--    SeckillGoodDTO getSeckillGoodById(Long id);-->
+    <select id="getSeckillGoodById" resultMap="seckill_good">
+        select good.id         as good_id,
+               good.good_name,
+               good.good_title,
+               good.good_img,
+               good.good_detail,
+               good.good_price,
+               good.good_stock,
+               good.gmt_create,
+               good.gmt_modified,
+
+               seckill_good.id as seckill_good_id,
+               seckill_good.seckill_price,
+               seckill_good.stock_count,
+               seckill_good.start_date,
+               seckill_good.end_date
+        from good,
+             seckill_good
+        where seckill_good.good_id = good.id
+          and seckill_good.id = #{id};
+    </select>
+</mapper>

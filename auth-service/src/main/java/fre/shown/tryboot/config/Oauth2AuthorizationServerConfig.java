@@ -34,12 +34,14 @@ public class Oauth2AuthorizationServerConfig extends AuthorizationServerConfigur
     private final AuthenticationManager authenticationManager;
     private final Oauth2ServerClientsProperties oauth2ServerClientsProperties;
     private final TokenStore tokenStore;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public Oauth2AuthorizationServerConfig(AuthenticationManager authenticationManager, Oauth2ServerClientsProperties oauth2ServerClientsProperties, TokenStore tokenStore) {
+    public Oauth2AuthorizationServerConfig(AuthenticationManager authenticationManager, Oauth2ServerClientsProperties oauth2ServerClientsProperties, TokenStore tokenStore, PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.oauth2ServerClientsProperties = oauth2ServerClientsProperties;
         this.tokenStore = tokenStore;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -49,7 +51,7 @@ public class Oauth2AuthorizationServerConfig extends AuthorizationServerConfigur
                 .tokenKeyAccess("permitAll()")
                 //url:/oauth/check_token allow check token
                 .checkTokenAccess("isAuthenticated()")
-                .passwordEncoder(inMemoryClientDetailsPasswordEncoder());
+                .passwordEncoder(passwordEncoder);
     }
 
     @Override
@@ -66,10 +68,9 @@ public class Oauth2AuthorizationServerConfig extends AuthorizationServerConfigur
                     .scopes(client.getScopes())
                     .autoApprove(client.getAutoApproveScopes())
                     .autoApprove(client.isAutoApprove())
-                    .secret(client.getSecret())
+                    .secret(passwordEncoder.encode(client.getSecret()))
                     .redirectUris(client.getRedirectUris())
                     .resourceIds(client.getResourceIds());
-
             //由于配置方法的参数是原始类型, 必须进行非空校验再传入
             if (client.getAccessTokenValiditySeconds() != null) {
                 builder.accessTokenValiditySeconds(client.getAccessTokenValiditySeconds());
@@ -78,26 +79,6 @@ public class Oauth2AuthorizationServerConfig extends AuthorizationServerConfigur
                 builder.refreshTokenValiditySeconds(client.getRefreshTokenValiditySeconds());
             }
         }
-    }
-
-    /**
-     * inMemoryClientDetailsPasswordEncoder只应该在这个类中, 不应被其他类拿到.
-     *
-     * @return inMemoryClientDetailsPasswordEncoder
-     */
-    private PasswordEncoder inMemoryClientDetailsPasswordEncoder() {
-        return new PasswordEncoder() {
-            @Override
-            public String encode(CharSequence rawPassword) {
-                return rawPassword.toString();
-            }
-
-            @Override
-            public boolean matches(CharSequence rawPassword, String encodedPassword) {
-
-                return encodedPassword != null && encodedPassword.equals(rawPassword.toString());
-            }
-        };
     }
 
     @Override
@@ -117,9 +98,6 @@ public class Oauth2AuthorizationServerConfig extends AuthorizationServerConfigur
             return new RedisTokenStore(redisConnectionFactory);
         }
 
-        /**
-         * 为password grant Oauth2认证提供密码加密
-         */
         @Bean
         public PasswordEncoder passwordEncoder() {
             return new BCryptPasswordEncoder();

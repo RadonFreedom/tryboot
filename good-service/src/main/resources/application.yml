@@ -1,0 +1,48 @@
+#  cloud:
+#    config:
+#      fail-fast: true
+#      uri: http://localhost:8888
+
+spring:
+  application:
+    name: good-service
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/good_service
+    username: radon
+    password: radon
+
+mybatis:
+  mapper-locations: classpath:mapper/*
+  configuration:
+    map-underscore-to-camel-case: true
+    use-generated-keys: true
+    jdbc-type-for-null: NULL
+
+server:
+  port: 8601
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://47.107.38.165:8763/eureka/,http://47.107.38.165:8762/eureka/
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+#    com.netflix: DEBUG
+
+security:
+  oauth2:
+    client:
+      client-id: good-service
+      authorized-grant-types:
+        - client_credentials
+        - refresh_token
+      client-secret: radon
+      scope: server
+      access-token-uri: http://47.107.38.165:5000/oauth/token
+
+    resource:
+      token-info-uri: http://47.107.38.165:5000/oauth/check_token

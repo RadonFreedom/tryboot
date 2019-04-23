@@ -20,13 +20,13 @@ public class UserController {
     }
 
 
-    @GetMapping("auth/user/{username}")
+    @GetMapping("/user/{username}")
     @PreAuthorize("#oauth2.hasScope('server')")
     public UserDO userData(@PathVariable("username") String username) {
         return userService.getUserDataByUsername(username);
     }
 
-    @PostMapping("auth/register")
+    @PostMapping("/register")
     public Boolean addUser(@RequestBody UserDO userDO) {
         return userService.addUser(userDO);
     }

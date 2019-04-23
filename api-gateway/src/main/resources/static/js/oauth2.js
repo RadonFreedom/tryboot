@@ -4,16 +4,11 @@ function requestOauthToken(username, password) {
 
     $.ajax({
         url: 'auth/oauth/token',
-        datatype: 'json',
+        contentType: 'application/x-www-form-urlencoded',
         type: 'post',
         headers: {'Authorization': 'Basic dWk6cmFkb24='},
         async: false,
-        data: {
-            scope: 'ui',
-            username: username,
-            password: password,
-            grant_type: 'password'
-        },
+        data: 'username='+username+'&password='+password+'&grant_type=password&scope=ui',
         success: function (data) {
             localStorage.setItem('token', data.access_token);
             success = true;
