@@ -5,11 +5,11 @@
 
 spring:
   application:
-    name: good-service
+    name: order-service
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/good_service?serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/order_service
     username: radon
     password: radon
 
@@ -21,7 +21,7 @@ mybatis:
     jdbc-type-for-null: NULL
 
 server:
-  port: 8600
+  port: 8601
 
 eureka:
   client:
@@ -36,7 +36,7 @@ logging:
 security:
   oauth2:
     client:
-      client-id: good-service
+      client-id: order-service
       authorized-grant-types:
         - client_credentials
         - refresh_token

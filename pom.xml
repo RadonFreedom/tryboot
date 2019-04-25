@@ -23,6 +23,7 @@
         <module>api-gateway</module>
         <module>order-service</module>
         <module>good-service</module>
+        <module>member-service</module>
     </modules>
 
     <properties>

@@ -3,19 +3,21 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>tryboot</artifactId>
+        <artifactId>api-gateway</artifactId>
         <groupId>fre.shown.tryboot</groupId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../api-gateway/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>good-service</artifactId>
+    <artifactId>member-service</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>fre.shown.tryboot</groupId>
             <artifactId>common</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -45,5 +47,9 @@
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.cloud</groupId>-->
+        <!--            <artifactId>spring-cloud-starter-config</artifactId>-->
+        <!--        </dependency>-->
     </dependencies>
 </project>

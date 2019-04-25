@@ -1,7 +1,7 @@
 show variables like 'character%';
-set character_set_database=utf8mb4;
-set character_set_server=utf8mb4;
-
+set character_set_database = utf8mb4;
+set character_set_server = utf8mb4;
+show variables like '%time_zone%';
 
 # create database if not exists auth_service;
 # use auth_service;
@@ -55,7 +55,7 @@ CREATE TABLE `seckill_good`
     `seckill_price` decimal(10, 2) DEFAULT '0.00' COMMENT '秒杀价',
     `stock_count`   int(11)        DEFAULT NULL COMMENT '库存数量',
     `start_date`    datetime       default CURRENT_TIMESTAMP COMMENT '秒杀开始时间',
-    `end_date`      datetime       DEFAULT NULL COMMENT '秒杀结束时间',
+    `end_date`      datetime       default null COMMENT '秒杀结束时间',
     gmt_create      datetime       default CURRENT_TIMESTAMP COMMENT '更新时间',
     gmt_modified    datetime       default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`)
@@ -63,11 +63,11 @@ CREATE TABLE `seckill_good`
   DEFAULT CHARSET = utf8mb4;
 
 INSERT INTO `seckill_good`
-    (good_id, seckill_price, stock_count, start_date, end_date)
-VALUES ('1', '0.01', '9', '2017-12-04 21:51:23', '2017-12-31 21:51:27'),
-       ('2', '0.01', '9', '2017-12-04 21:40:14', '2017-12-31 14:00:24'),
-       ('3', '0.01', '9', '2017-12-04 21:40:14', '2017-12-31 14:00:24'),
-       ('4', '0.01', '9', '2017-12-04 21:40:14', '2017-12-31 14:00:24');
+    (good_id, seckill_price, stock_count, end_date)
+VALUES ('1', '0.01', '9', '2019-12-31 21:51:27'),
+       ('2', '0.01', '9', '2019-12-31 14:00:24'),
+       ('3', '0.01', '9', '2019-12-31 14:00:24'),
+       ('4', '0.01', '9', '2019-12-31 14:00:24');
 
 
 create database if not exists order_service;
@@ -92,8 +92,6 @@ CREATE TABLE `order`
     UNIQUE KEY `u_uid_gid` (`user_id`, `good_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
-
-
 
 
 
