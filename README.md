@@ -10,14 +10,14 @@ tryboot 项目采用 [微服务架构 (microservice)](https://martinfowler.com/a
 
 请点击端口查看部署实例 !
 
-|    服务名     |          功能简述           |                           部署端口                           | 实例个数 |
-| :-----------: | :-------------------------: | :----------------------------------------------------------: | :------: |
-|  api-gateway  |  Spring Cloud Gateway网关   |                              80                              |    1     |
-|   registry    |     Eureka注册中心集群      | [8762](http://47.107.38.165:8763), [8763](http://47.107.38.165:8763) |    2     |
-| auth-service  |          认证服务           |              [5000](http://47.107.38.165:5000)               |    1     |
-| order-service |          订单服务           |                             8600                             |    1     |
-|    config     | Spring Cloud Config配置中心 |                             8888                             |    1     |
-|      cdn      | 为静态资源提供CDN, 独立部署 |              [8081](http://47.107.38.165:8081)               |    1     |
+|    服务名    |          功能简述           |                           部署端口                           | 实例个数 |
+| :----------: | :-------------------------: | :----------------------------------------------------------: | :------: |
+| api-gateway  |  Spring Cloud Gateway网关   |                              80                              |    1     |
+|   registry   |     Eureka注册中心集群      | [8762](http://47.107.38.165:8763), [8763](http://47.107.38.165:8763) |    2     |
+| auth-service |          认证服务           |              [5000](http://47.107.38.165:5000)               |    1     |
+| good-service |       商品与订单服务        |                             8600                             |    1     |
+|    config    | Spring Cloud Config配置中心 |                             8888                             |    1     |
+|     cdn      | 为静态资源提供CDN, 独立部署 |              [8081](http://47.107.38.165:8081)               |    1     |
 
 示意图如下所示: 
 
@@ -25,7 +25,7 @@ tryboot 项目采用 [微服务架构 (microservice)](https://martinfowler.com/a
 
 
 
-## 开发过程
+## 基础设施搭建
 
 ### 搭建 eureka 服务器集群
 
@@ -186,10 +186,10 @@ spring:
           predicates:
             - Path=/auth/**
 
-        - id: order-service
-          uri: lb://order-service/
+        - id: good-service
+          uri: lb://good-service/
           predicates:
-            - Path=/order/**
+            - Path=/order/**, /good/**, /seckill/**
 ```
 
 
@@ -245,12 +245,6 @@ public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 			return this;
 		}
 ```
-
-
-
-### Bean循环依赖
-
-
 
 
 
