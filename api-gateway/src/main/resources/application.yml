@@ -14,7 +14,13 @@ spring:
         - id: order-service
           uri: lb://order-service/
           predicates:
-            - Path=/order/**
+            - Path=/seckill/**, /order/**
+
+        - id: good-service
+          uri: lb://good-service/
+          predicates:
+            - Path=/good/**
+
 server:
   port: 4000
 #  cloud:

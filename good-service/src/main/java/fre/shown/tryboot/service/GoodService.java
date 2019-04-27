@@ -1,7 +1,7 @@
 package fre.shown.tryboot.service;
 
-import fre.shown.tryboot.domain.SeckillGoodVO;
 import fre.shown.tryboot.domain.SeckillGoodDTO;
+import fre.shown.tryboot.domain.SeckillGoodVO;
 
 import java.util.List;
 
@@ -15,4 +15,6 @@ public interface GoodService {
     List<SeckillGoodDTO> getSeckillGoodsAsList();
 
     SeckillGoodVO getSeckillGoodById(Long seckillGoodId);
+
+    Boolean reduceSeckillGoodStock(Long seckillGoodId, Integer goodCnt);
 }

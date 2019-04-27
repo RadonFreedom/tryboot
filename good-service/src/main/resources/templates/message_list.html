@@ -32,7 +32,7 @@
         <td th:if="${messages.messageType eq 0}">秒杀消息</td>
         <td th:if="${messages.messageType eq 1}">购买消息</td>
         <td th:if="${messages.messageType eq 2}">系统消息</td>
-        <input id="userid" th:value="${messages.userId}" th:type="hidden"></input>
+        <input id="userid" th:value="${messages.username}" th:type="hidden"></input>
         <td th:text="${messages.content}"></td>
                 <td th:text="${#dates.format(messages.createTime, 'yyyy-MM-dd')}" colspan="2"></td>
     </tr>

@@ -8,7 +8,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/auth_service
+    url: jdbc:mysql://localhost:3306/auth_service?serverTimezone=Asia/Shanghai
     username: radon
     password: radon
 
@@ -54,7 +54,7 @@ security:
             - refresh_token
           scopes: ui
 
-        username-service:
+        order-service:
           client-id: order-service
           secret: radon
           authorized-grant-types:
@@ -62,13 +62,18 @@ security:
             - refresh_token
           scopes: server
 
-#        # 客户端名, 这个名字是无用的, 最后只会取值
-#        client:
-#          # client-id中的名字是有用的
-#          client-id: client
-#          secret: radon
-#          authorized-grant-types:
-#            - authorization_code
-#            - refresh_token
-#          redirectUris: /redirect
-#          scopes: client
+        good-service:
+          client-id: good-service
+          secret: radon
+          authorized-grant-types:
+            - client_credentials
+            - refresh_token
+          scopes: server
+
+        member-service:
+          client-id: member-service
+          secret: radon
+          authorized-grant-types:
+            - client_credentials
+            - refresh_token
+          scopes: server

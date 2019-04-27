@@ -40,7 +40,7 @@ INSERT INTO `good` (good_name, good_title, good_img, good_detail, good_price, go
 VALUES ('iphoneX', 'Apple iPhone X (A1865) 64GB 银色 移动联通电信4G手机', '/img/iphonex.png',
         'Apple iPhone X (A1865) 64GB 银色 移动联通电信4G手机', '8765.00', '10000'),
        ('华为Meta9', '华为 Mate 9 4GB+32GB版 月光银 移动联通电信4G手机 双卡双待', '/img/meta10.png',
-        '华为 Mate 9 4GB+32GB版 月光银 移动联通电信4G手机 双卡双待', '3212.00', '-1'),
+        '华为 Mate 9 4GB+32GB版 月光银 移动联通电信4G手机 双卡双待', '3212.00', '10000'),
        ('iphone8', 'Apple iPhone 8 (A1865) 64GB 银色 移动联通电信4G手机', '/img/iphone8.png',
         'Apple iPhone 8 (A1865) 64GB 银色 移动联通电信4G手机', '5589.00', '10000'),
        ('小米6', '小米6 4GB+32GB版 月光银 移动联通电信4G手机 双卡双待', '/img/mi6.png', '小米6 4GB+32GB版 月光银 移动联通电信4G手机 双卡双待', '3212.00',
@@ -69,17 +69,13 @@ VALUES ('1', '0.01', '9', '2019-12-31 21:51:27'),
        ('3', '0.01', '9', '2019-12-31 14:00:24'),
        ('4', '0.01', '9', '2019-12-31 14:00:24');
 
-
-create database if not exists order_service;
-use order_service;
-
-DROP TABLE IF EXISTS `order`;
-CREATE TABLE `order`
+DROP TABLE IF EXISTS `seckill_order`;
+CREATE TABLE `seckill_order`
 (
     `id`               bigint unsigned NOT NULL AUTO_INCREMENT,
-    `user_id`          bigint(20)     DEFAULT NULL COMMENT '用户ID',
-    `good_id`          bigint(20)     DEFAULT NULL COMMENT '商品ID',
-    `delivery_addr_id` bigint(20)     DEFAULT NULL COMMENT '收获地址ID',
+    username           varchar(20)     NOT NULL,
+    `seckill_good_id`  bigint(20)     DEFAULT NULL COMMENT '商品ID',
+    `delivery_info_id` bigint(20)     DEFAULT NULL COMMENT '收获地址ID',
     `good_name`        varchar(16)    DEFAULT NULL COMMENT '冗余过来的商品名称',
     `good_count`       int(11)        DEFAULT '0' COMMENT '商品数量',
     `good_price`       decimal(10, 2) DEFAULT '0.00' COMMENT '商品单价',
@@ -88,10 +84,13 @@ CREATE TABLE `order`
     gmt_create         datetime       default CURRENT_TIMESTAMP COMMENT '订单的创建时间',
     `pay_date`         datetime       DEFAULT NULL COMMENT '支付时间',
     gmt_modified       datetime       default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    PRIMARY KEY (`id`),
-    UNIQUE KEY `u_uid_gid` (`user_id`, `good_id`)
+    PRIMARY KEY pk_id (`id`),
+    UNIQUE KEY `uk_good_id_username` (seckill_good_id, `username`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
+
+
+
 
 
 

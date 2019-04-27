@@ -20,10 +20,22 @@ public class GoodDAOTest {
     private GoodDAO goodDAO;
 
     @Test
-    public void testGoodDAO() {
+    public void testGetSeckillGoodsAsList() {
         for (SeckillGoodDTO seckillGoodDTO : goodDAO.getSeckillGoodsAsList()) {
             System.out.println(seckillGoodDTO);
         }
         System.out.println(goodDAO.getSeckillGoodById(1L));
+    }
+
+    @Test
+    public void testGetSeckillGoodById() {
+        System.out.println(goodDAO.getSeckillGoodById(1L));
+        System.out.println(goodDAO.getSeckillGoodInfoById(1L));
+    }
+
+    @Test
+    public void testReduceSeckillGoodStock() {
+        System.out.println(goodDAO.reduceSeckillGoodStock(1L, 9));
+        System.out.println(goodDAO.reduceSeckillGoodStock(2L, 10));
     }
 }

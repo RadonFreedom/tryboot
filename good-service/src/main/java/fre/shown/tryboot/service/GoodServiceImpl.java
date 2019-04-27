@@ -16,6 +16,7 @@ import java.util.List;
 public class GoodServiceImpl implements GoodService {
 
     private final GoodDAO goodDAO;
+    private final Object lock = new Object();
 
     public GoodServiceImpl(GoodDAO goodDAO) {
         this.goodDAO = goodDAO;
@@ -50,5 +51,10 @@ public class GoodServiceImpl implements GoodService {
 
         seckillGoodVO.setRemainSeconds(remainSeconds);
         return seckillGoodVO;
+    }
+
+    @Override
+    public Boolean reduceSeckillGoodStock(Long seckillGoodId, Integer goodCnt) {
+        return goodDAO.reduceSeckillGoodStock(seckillGoodId, goodCnt);
     }
 }

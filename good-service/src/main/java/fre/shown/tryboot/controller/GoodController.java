@@ -30,7 +30,7 @@ public class GoodController {
     }
 
     @GetMapping("/good/{seckillGoodId}")
-    public SeckillGoodVO good(@PathVariable Long seckillGoodId) {
+    public SeckillGoodVO getSeckillGoodById(@PathVariable Long seckillGoodId) {
         return goodService.getSeckillGoodById(seckillGoodId);
     }
 }

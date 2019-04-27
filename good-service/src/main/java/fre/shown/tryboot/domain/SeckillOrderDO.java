@@ -11,12 +11,12 @@ import java.sql.Timestamp;
  * created at 2019.04.24 下午8:37
  */
 
-public class OrderDO {
+public class SeckillOrderDO {
 
     private Long id;
-    private Long userId;
-    private Long goodId;
-    private Long deliveryAddrId;
+    private String username;
+    private Long seckillGoodId;
+    private Long deliveryInfoId;
     private String goodName;
     private Integer goodCount;
     private Double goodPrice;
@@ -26,16 +26,16 @@ public class OrderDO {
     private Timestamp gmtCreate;
     private Timestamp gmtModified;
 
-    public OrderDO() {
+    public SeckillOrderDO() {
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
                 .append("id", id)
-                .append("userId", userId)
-                .append("goodId", goodId)
-                .append("deliveryAddrId", deliveryAddrId)
+                .append("username", username)
+                .append("seckillGoodId", seckillGoodId)
+                .append("deliveryInfoId", deliveryInfoId)
                 .append("goodName", goodName)
                 .append("goodCount", goodCount)
                 .append("goodPrice", goodPrice)
@@ -57,21 +57,21 @@ public class OrderDO {
             return false;
         }
 
-        OrderDO orderDO = (OrderDO) o;
+        SeckillOrderDO seckillOrderDO = (SeckillOrderDO) o;
 
         return new EqualsBuilder()
-                .append(getId(), orderDO.getId())
-                .append(getUserId(), orderDO.getUserId())
-                .append(getGoodId(), orderDO.getGoodId())
-                .append(getDeliveryAddrId(), orderDO.getDeliveryAddrId())
-                .append(getGoodName(), orderDO.getGoodName())
-                .append(getGoodCount(), orderDO.getGoodCount())
-                .append(getGoodPrice(), orderDO.getGoodPrice())
-                .append(getOrderChannel(), orderDO.getOrderChannel())
-                .append(getStatus(), orderDO.getStatus())
-                .append(getPayDate(), orderDO.getPayDate())
-                .append(getGmtCreate(), orderDO.getGmtCreate())
-                .append(getGmtModified(), orderDO.getGmtModified())
+                .append(getId(), seckillOrderDO.getId())
+                .append(getUsername(), seckillOrderDO.getUsername())
+                .append(getSeckillGoodId(), seckillOrderDO.getSeckillGoodId())
+                .append(getDeliveryInfoId(), seckillOrderDO.getDeliveryInfoId())
+                .append(getGoodName(), seckillOrderDO.getGoodName())
+                .append(getGoodCount(), seckillOrderDO.getGoodCount())
+                .append(getGoodPrice(), seckillOrderDO.getGoodPrice())
+                .append(getOrderChannel(), seckillOrderDO.getOrderChannel())
+                .append(getStatus(), seckillOrderDO.getStatus())
+                .append(getPayDate(), seckillOrderDO.getPayDate())
+                .append(getGmtCreate(), seckillOrderDO.getGmtCreate())
+                .append(getGmtModified(), seckillOrderDO.getGmtModified())
                 .isEquals();
     }
 
@@ -79,9 +79,9 @@ public class OrderDO {
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .append(getId())
-                .append(getUserId())
-                .append(getGoodId())
-                .append(getDeliveryAddrId())
+                .append(getUsername())
+                .append(getSeckillGoodId())
+                .append(getDeliveryInfoId())
                 .append(getGoodName())
                 .append(getGoodCount())
                 .append(getGoodPrice())
@@ -101,28 +101,28 @@ public class OrderDO {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public Long getGoodId() {
-        return goodId;
+    public Long getSeckillGoodId() {
+        return seckillGoodId;
     }
 
-    public void setGoodId(Long goodId) {
-        this.goodId = goodId;
+    public void setSeckillGoodId(Long seckillGoodId) {
+        this.seckillGoodId = seckillGoodId;
     }
 
-    public Long getDeliveryAddrId() {
-        return deliveryAddrId;
+    public Long getDeliveryInfoId() {
+        return deliveryInfoId;
     }
 
-    public void setDeliveryAddrId(Long deliveryAddrId) {
-        this.deliveryAddrId = deliveryAddrId;
+    public void setDeliveryInfoId(Long deliveryInfoId) {
+        this.deliveryInfoId = deliveryInfoId;
     }
 
     public String getGoodName() {

@@ -5,11 +5,11 @@
 
 spring:
   application:
-    name: order-service
+    name: member-service
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/order_service
+    url: jdbc:mysql://localhost:3306/member_service?serverTimezone=Asia/Shanghai
     username: radon
     password: radon
 
@@ -36,7 +36,7 @@ logging:
 security:
   oauth2:
     client:
-      client-id: order-service
+      client-id: member-service
       authorized-grant-types:
         - client_credentials
         - refresh_token

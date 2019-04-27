@@ -12,7 +12,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class DeliveryInfoDO {
 
     private Long id;
-    private Long userId;
     private String username;
     private String deliverAddress;
     private String phoneNumber;
@@ -21,7 +20,6 @@ public class DeliveryInfoDO {
     public String toString() {
         return new ToStringBuilder(this)
                 .append("id", id)
-                .append("userId", userId)
                 .append("username", username)
                 .append("deliverAddress", deliverAddress)
                 .append("phoneNumber", phoneNumber)
@@ -42,7 +40,6 @@ public class DeliveryInfoDO {
 
         return new EqualsBuilder()
                 .append(getId(), that.getId())
-                .append(getUserId(), that.getUserId())
                 .append(getUsername(), that.getUsername())
                 .append(getDeliverAddress(), that.getDeliverAddress())
                 .append(getPhoneNumber(), that.getPhoneNumber())
@@ -53,11 +50,13 @@ public class DeliveryInfoDO {
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .append(getId())
-                .append(getUserId())
                 .append(getUsername())
                 .append(getDeliverAddress())
                 .append(getPhoneNumber())
                 .toHashCode();
+    }
+
+    public DeliveryInfoDO() {
     }
 
     public Long getId() {
@@ -66,14 +65,6 @@ public class DeliveryInfoDO {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public String getUsername() {

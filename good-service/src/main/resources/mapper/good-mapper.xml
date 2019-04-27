@@ -48,7 +48,7 @@
         where seckill_good.good_id = good.id;
     </select>
 
-    <!--    SeckillGoodDTO getSeckillGoodById(Long id);-->
+    <!--    SeckillGoodDTO getSeckillGoodById(Long seckillGoodId);-->
     <select id="getSeckillGoodById" resultMap="seckill_good">
         select good.id         as good_id,
                good.good_name,
@@ -68,6 +68,22 @@
         from good,
              seckill_good
         where seckill_good.good_id = good.id
-          and seckill_good.id = #{id};
+          and seckill_good.id = #{seckillGoodId};
+    </select>
+
+    <!--    Boolean reduceSeckillGoodStock(Long seckillGoodId, Integer goodCnt);-->
+    <update id="reduceSeckillGoodStock">
+        update seckill_good
+        set stock_count = stock_count - #{goodCnt}
+        where id = #{seckillGoodId}
+          and stock_count >= #{goodCnt}
+    </update>
+    <!--    SeckillGoodInfoDTO getSeckillGoodInfoById(Long seckillGoodId);-->
+    <select id="getSeckillGoodInfoById" resultType="fre.shown.tryboot.domain.SeckillGoodInfoDTO">
+        select good_price, good_name, seckill_price
+        from good,
+             seckill_good
+        where seckill_good.good_id = good.id
+          and seckill_good.id = #{seckillGoodId};
     </select>
 </mapper>
