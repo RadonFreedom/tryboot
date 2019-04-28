@@ -4,19 +4,39 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="fre.shown.tryboot.dao.SeckillOrderDAO">
 
-<!--    void addOrder(SeckillOrderDO seckillOrderDO);-->
-    <insert id="addOrder">
-        insert into `seckill_order` (username, seckill_good_id, delivery_info_id, good_name, good_count, good_price, order_channel,
-                             status)
-        values (#{username}, #{seckillGoodId}, #{deliveryInfoId}, #{goodName}, #{goodCount}, #{goodPrice}, #{orderChannel},
+    <!--    void addOrder(SeckillOrderDO seckillOrderDO);-->
+    <insert id="addOrder" keyProperty="id">
+        insert into `seckill_order` (username, good_id, seckill_good_id, delivery_info_id, good_name, good_count,
+                                     good_price, seckill_price,
+                                     order_channel,
+                                     status)
+        values (#{username}, #{goodId}, #{seckillGoodId}, #{deliveryInfoId}, #{goodName}, #{goodCount}, #{goodPrice},
+                #{seckillPrice},
+                #{orderChannel},
                 #{status});
     </insert>
 
-<!--    Boolean isOrderExisted(String username, Long seckillGoodId);-->
-    <select id="isOrderExisted" resultType="Boolean">
-        select count(username) > 0
+    <!--    Long isOrderExisted(String username, Long seckillGoodId);-->
+    <select id="isOrderExisted" resultType="Long">
+        select id
         from `seckill_order`
-        where username = #{username}
-          and seckill_good_id = #{seckillGoodId};
+        where seckill_good_id = #{seckillGoodId}
+          and username = #{username};
+    </select>
+
+
+    <!--    SeckillOrderDetailVO getSeckillOrderDetailVOByIdAndUsername(Long orderId, String username);-->
+    <select id="getSeckillOrderDetailVOByIdAndUsername"
+            resultType="fre.shown.tryboot.domain.order.SeckillOrderDetailVO">
+        select seckill_order.good_name,
+               good_img,
+               seckill_order.good_price,
+               seckill_order.seckill_price,
+               seckill_order.gmt_create
+        from seckill_order,
+             good
+        where seckill_order.id = #{orderId}
+          and seckill_order.username = #{username}
+          and seckill_order.good_id = good.id;
     </select>
 </mapper>

@@ -1,4 +1,4 @@
-package fre.shown.tryboot.domain;
+package fre.shown.tryboot.domain.order;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -9,6 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class SeckillGoodInfoDTO {
 
+    private Long goodId;
     private Double goodPrice;
     private Double seckillPrice;
     private String goodName;
@@ -19,10 +20,19 @@ public class SeckillGoodInfoDTO {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
+                .append("goodId", goodId)
                 .append("goodPrice", goodPrice)
                 .append("seckillPrice", seckillPrice)
                 .append("goodName", goodName)
                 .toString();
+    }
+
+    public Long getGoodId() {
+        return goodId;
+    }
+
+    public void setGoodId(Long goodId) {
+        this.goodId = goodId;
     }
 
     public Double getGoodPrice() {

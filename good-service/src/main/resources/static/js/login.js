@@ -43,7 +43,7 @@ function register() {
     var holder = null;
     $.ajax({
         type: "POST",
-        url: "auth/register",
+        url: "/auth/register",
         data: {
             username: username,
             email: email,

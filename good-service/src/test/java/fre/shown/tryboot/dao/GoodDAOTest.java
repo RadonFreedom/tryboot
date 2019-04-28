@@ -1,6 +1,6 @@
 package fre.shown.tryboot.dao;
 
-import fre.shown.tryboot.domain.SeckillGoodDTO;
+import fre.shown.tryboot.domain.good.SeckillGoodDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

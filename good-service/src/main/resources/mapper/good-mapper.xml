@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="fre.shown.tryboot.dao.GoodDAO">
 
-    <resultMap id="seckill_good" type="fre.shown.tryboot.domain.SeckillGoodDTO">
+    <resultMap id="seckill_good" type="fre.shown.tryboot.domain.good.SeckillGoodDTO">
 
         <id column="seckill_good_id" property="id"/>
         <result column="seckill_price" property="seckillPrice"/>
@@ -14,7 +14,7 @@
         <association property="goodDO" resultMap="good"/>
     </resultMap>
 
-    <resultMap id="good" type="fre.shown.tryboot.domain.GoodDO">
+    <resultMap id="good" type="fre.shown.tryboot.domain.good.GoodDO">
         <id column="good_id" property="id"/>
         <result column="good_name" property="goodName"/>
         <result column="good_title" property="goodTitle"/>
@@ -79,8 +79,8 @@
           and stock_count >= #{goodCnt}
     </update>
     <!--    SeckillGoodInfoDTO getSeckillGoodInfoById(Long seckillGoodId);-->
-    <select id="getSeckillGoodInfoById" resultType="fre.shown.tryboot.domain.SeckillGoodInfoDTO">
-        select good_price, good_name, seckill_price
+    <select id="getSeckillGoodInfoById" resultType="fre.shown.tryboot.domain.order.SeckillGoodInfoDTO">
+        select good_id, good_price, good_name, seckill_price
         from good,
              seckill_good
         where seckill_good.good_id = good.id

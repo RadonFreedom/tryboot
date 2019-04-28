@@ -46,23 +46,35 @@ function doSeckill() {
     var token = getOauthTokenFromStorage();
     if (token == null) {
         layer.msg("请先登录!");
-        window.location.href="/login.html";
+        window.location.href = "/login.html";
     }
+
+    var seckillGoodId = $("#seckillGoodId").val();
     $.ajax({
         url: "/seckill",
         type: "POST",
         headers: {'Authorization': 'Bearer ' + token},
         data: {
-            seckillGoodId: $("#goodId").val(),
+            seckillGoodId: seckillGoodId,
             goodCnt: 1,
             deliveryInfoId: 1,
             orderChannel: 1
         },
-        success: function (data) {
-            if (data.success == true) {
-                window.location.href = "/order_detail.html?orderId=" + data.data;
+        success: function (result) {
+            if (result.success == true) {
+                if (result.msg != null) {
+                    layer.confirm(result.msg + " 查看订单?", {btn: ["确定", "取消"]},
+                        function () {
+                            window.location.href = "/order_detail.html?orderId=" + result.data;
+                        },
+                        function () {
+                            layer.closeAll();
+                        });
+                } else {
+                    window.location.href = "/order_detail.html?orderId=" + result.data;
+                }
             } else {
-                layer.msg(data.msg);
+                layer.msg(result.msg);
             }
         },
         error: function () {

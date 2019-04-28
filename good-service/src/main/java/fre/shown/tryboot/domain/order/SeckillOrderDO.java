@@ -1,7 +1,5 @@
-package fre.shown.tryboot.domain;
+package fre.shown.tryboot.domain.order;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.sql.Timestamp;
@@ -15,11 +13,13 @@ public class SeckillOrderDO {
 
     private Long id;
     private String username;
+    private Long goodId;
     private Long seckillGoodId;
     private Long deliveryInfoId;
     private String goodName;
     private Integer goodCount;
     private Double goodPrice;
+    private Double seckillPrice;
     private Integer orderChannel;
     private Integer status;
     private Timestamp payDate;
@@ -35,9 +35,11 @@ public class SeckillOrderDO {
                 .append("id", id)
                 .append("username", username)
                 .append("seckillGoodId", seckillGoodId)
+                .append("goodId", goodId)
                 .append("deliveryInfoId", deliveryInfoId)
                 .append("goodName", goodName)
                 .append("goodCount", goodCount)
+                .append("seckillPrice", seckillPrice)
                 .append("goodPrice", goodPrice)
                 .append("orderChannel", orderChannel)
                 .append("status", status)
@@ -47,50 +49,20 @@ public class SeckillOrderDO {
                 .toString();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        SeckillOrderDO seckillOrderDO = (SeckillOrderDO) o;
-
-        return new EqualsBuilder()
-                .append(getId(), seckillOrderDO.getId())
-                .append(getUsername(), seckillOrderDO.getUsername())
-                .append(getSeckillGoodId(), seckillOrderDO.getSeckillGoodId())
-                .append(getDeliveryInfoId(), seckillOrderDO.getDeliveryInfoId())
-                .append(getGoodName(), seckillOrderDO.getGoodName())
-                .append(getGoodCount(), seckillOrderDO.getGoodCount())
-                .append(getGoodPrice(), seckillOrderDO.getGoodPrice())
-                .append(getOrderChannel(), seckillOrderDO.getOrderChannel())
-                .append(getStatus(), seckillOrderDO.getStatus())
-                .append(getPayDate(), seckillOrderDO.getPayDate())
-                .append(getGmtCreate(), seckillOrderDO.getGmtCreate())
-                .append(getGmtModified(), seckillOrderDO.getGmtModified())
-                .isEquals();
+    public Double getSeckillPrice() {
+        return seckillPrice;
     }
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 37)
-                .append(getId())
-                .append(getUsername())
-                .append(getSeckillGoodId())
-                .append(getDeliveryInfoId())
-                .append(getGoodName())
-                .append(getGoodCount())
-                .append(getGoodPrice())
-                .append(getOrderChannel())
-                .append(getStatus())
-                .append(getPayDate())
-                .append(getGmtCreate())
-                .append(getGmtModified())
-                .toHashCode();
+    public void setSeckillPrice(Double seckillPrice) {
+        this.seckillPrice = seckillPrice;
+    }
+
+    public Long getGoodId() {
+        return goodId;
+    }
+
+    public void setGoodId(Long goodId) {
+        this.goodId = goodId;
     }
 
     public Long getId() {

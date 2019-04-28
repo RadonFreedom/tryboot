@@ -1,4 +1,4 @@
-package fre.shown.tryboot.domain;
+package fre.shown.tryboot.domain.order;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * created at 2019.04.26 上午9:45
  */
 
-public class SeckillOrderVO {
+public class SeckillOrderDTO {
 
     private Long seckillGoodId;
     private Integer goodCnt;
@@ -27,14 +27,14 @@ public class SeckillOrderVO {
             return false;
         }
 
-        SeckillOrderVO seckillOrderVO = (SeckillOrderVO) o;
+        SeckillOrderDTO seckillOrderDTO = (SeckillOrderDTO) o;
 
         return new EqualsBuilder()
-                .append(getSeckillGoodId(), seckillOrderVO.getSeckillGoodId())
-                .append(getGoodCnt(), seckillOrderVO.getGoodCnt())
-                .append(getUsername(), seckillOrderVO.getUsername())
-                .append(getOrderChannel(), seckillOrderVO.getOrderChannel())
-                .append(getDeliveryInfoId(), seckillOrderVO.getDeliveryInfoId())
+                .append(getSeckillGoodId(), seckillOrderDTO.getSeckillGoodId())
+                .append(getGoodCnt(), seckillOrderDTO.getGoodCnt())
+                .append(getUsername(), seckillOrderDTO.getUsername())
+                .append(getOrderChannel(), seckillOrderDTO.getOrderChannel())
+                .append(getDeliveryInfoId(), seckillOrderDTO.getDeliveryInfoId())
                 .isEquals();
     }
 
@@ -60,7 +60,7 @@ public class SeckillOrderVO {
                 .toString();
     }
 
-    public SeckillOrderVO() {
+    public SeckillOrderDTO() {
     }
 
     public Long getSeckillGoodId() {

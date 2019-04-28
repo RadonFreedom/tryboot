@@ -11,15 +11,10 @@ spring:
           filters:
             - StripPrefix=1    #去掉路径前缀
 
-        - id: order-service
-          uri: lb://order-service/
-          predicates:
-            - Path=/seckill/**, /order/**
-
         - id: good-service
           uri: lb://good-service/
           predicates:
-            - Path=/good/**
+            - Path=/good/**, /seckill/**, /order/**
 
 server:
   port: 4000

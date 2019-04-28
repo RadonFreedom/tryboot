@@ -1,4 +1,4 @@
-package fre.shown.tryboot.domain;
+package fre.shown.tryboot.domain.good;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -11,12 +11,12 @@ import java.sql.Timestamp;
  * created at 2019.04.24 上午10:32
  */
 
-public class SeckillGoodVO {
+public class SeckillGoodDetailVO {
 
     private final SeckillGoodDTO seckillGoodDTO;
     private Long remainSeconds;
 
-    public SeckillGoodVO(SeckillGoodDTO seckillGoodDTO) {
+    public SeckillGoodDetailVO(SeckillGoodDTO seckillGoodDTO) {
         this.seckillGoodDTO = seckillGoodDTO;
     }
 
@@ -99,7 +99,7 @@ public class SeckillGoodVO {
             return false;
         }
 
-        SeckillGoodVO that = (SeckillGoodVO) o;
+        SeckillGoodDetailVO that = (SeckillGoodDetailVO) o;
 
         return new EqualsBuilder()
                 .append(seckillGoodDTO, that.seckillGoodDTO)

@@ -14,7 +14,7 @@ function login() {
     var holder = layer.msg("处理中...", {icon: 16});
     if (requestOauthToken(username, password)) {
         layer.close(holder);
-        return getCurrentAccount();
+        window.location.href="/goods.html";
     }
     else {
         layer.close(holder);
@@ -43,7 +43,7 @@ function register() {
     var holder = null;
     $.ajax({
         type: "POST",
-        url: "auth/register",
+        url: "/auth/register",
         data: {
             username: username,
             email: email,
@@ -56,7 +56,7 @@ function register() {
             layer.close(holder);
             if (result === true) {
                 requestOauthToken(username, password);
-                return getCurrentAccount();
+                window.location.href="/goods.html";
             } else {
                 layer.msg("用户名或邮箱已存在!", {time: 1000, icon: 2, shift: 6});
             }

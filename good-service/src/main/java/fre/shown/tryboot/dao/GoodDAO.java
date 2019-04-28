@@ -1,7 +1,7 @@
 package fre.shown.tryboot.dao;
 
-import fre.shown.tryboot.domain.SeckillGoodDTO;
-import fre.shown.tryboot.domain.SeckillGoodInfoDTO;
+import fre.shown.tryboot.domain.good.SeckillGoodDTO;
+import fre.shown.tryboot.domain.order.SeckillGoodInfoDTO;
 
 import java.util.List;
 

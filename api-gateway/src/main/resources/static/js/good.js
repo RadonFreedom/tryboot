@@ -2,7 +2,7 @@ function getGoodsList() {
 
     $.ajax({
         type: "GET",
-        url: "/goods",
+        url: "/good",
         success: function (result) {
             //局部刷新页面数据
             var userDataHtml = "";
@@ -46,7 +46,7 @@ function renderGoodDetail(seckillGood) {
     $("#goodImg").attr("src", seckillGood.goodDO.goodImg);
     $("#startTime").text(new Date(seckillGood.startDate).format("yyyy-MM-dd hh:mm:ss"));
     $("#remainSeconds").val(remainSeconds);
-    $("#goodId").val(seckillGood.id);
+    $("#seckillGoodId").val(seckillGood.id);
     $("#goodPrice").text(seckillGood.goodPrice);
     $("#seckillPrice").text(seckillGood.seckillPrice);
     $("#stockCount").text(seckillGood.stockCount);

@@ -1,8 +1,9 @@
 package fre.shown.tryboot.service;
 
 import fre.shown.tryboot.dao.GoodDAO;
-import fre.shown.tryboot.domain.SeckillGoodDTO;
-import fre.shown.tryboot.domain.SeckillGoodVO;
+import fre.shown.tryboot.domain.ResultVO;
+import fre.shown.tryboot.domain.good.SeckillGoodDTO;
+import fre.shown.tryboot.domain.good.SeckillGoodDetailVO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +17,6 @@ import java.util.List;
 public class GoodServiceImpl implements GoodService {
 
     private final GoodDAO goodDAO;
-    private final Object lock = new Object();
 
     public GoodServiceImpl(GoodDAO goodDAO) {
         this.goodDAO = goodDAO;
@@ -28,13 +28,20 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public SeckillGoodVO getSeckillGoodById(Long seckillGoodId) {
+    public ResultVO<SeckillGoodDetailVO> getSeckillGoodById(Long seckillGoodId) {
+
+        ResultVO<SeckillGoodDetailVO> resultVO = new ResultVO<>();
         SeckillGoodDTO seckillGoodDTO = goodDAO.getSeckillGoodById(seckillGoodId);
-        SeckillGoodVO seckillGoodVO = new SeckillGoodVO(seckillGoodDTO);
+
+        if (seckillGoodDTO == null || seckillGoodDTO.getId() == null) {
+            resultVO.setErrorMsg("商品信息不存在!");
+        }
+
+        SeckillGoodDetailVO seckillGoodDetailVO = new SeckillGoodDetailVO(seckillGoodDTO);
 
 
-        long seckillStartAt = seckillGoodVO.getStartDate().getTime();
-        long seckillEndAt = seckillGoodVO.getEndDate().getTime();
+        long seckillStartAt = seckillGoodDetailVO.getStartDate().getTime();
+        long seckillEndAt = seckillGoodDetailVO.getEndDate().getTime();
         long now = System.currentTimeMillis();
         long remainSeconds;
 
@@ -49,12 +56,8 @@ public class GoodServiceImpl implements GoodService {
             remainSeconds = 0L;
         }
 
-        seckillGoodVO.setRemainSeconds(remainSeconds);
-        return seckillGoodVO;
-    }
-
-    @Override
-    public Boolean reduceSeckillGoodStock(Long seckillGoodId, Integer goodCnt) {
-        return goodDAO.reduceSeckillGoodStock(seckillGoodId, goodCnt);
+        seckillGoodDetailVO.setRemainSeconds(remainSeconds);
+        resultVO.setSuccecssData(seckillGoodDetailVO);
+        return resultVO;
     }
 }

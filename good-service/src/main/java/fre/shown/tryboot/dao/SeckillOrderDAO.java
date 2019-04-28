@@ -1,6 +1,7 @@
 package fre.shown.tryboot.dao;
 
-import fre.shown.tryboot.domain.SeckillOrderDO;
+import fre.shown.tryboot.domain.order.SeckillOrderDO;
+import fre.shown.tryboot.domain.order.SeckillOrderDetailVO;
 
 /**
  * @author Radon Freedom
@@ -9,7 +10,9 @@ import fre.shown.tryboot.domain.SeckillOrderDO;
 
 public interface SeckillOrderDAO {
 
-    Boolean isOrderExisted(String username, Long seckillGoodId);
+    Long isOrderExisted(String username, Long seckillGoodId);
 
     void addOrder(SeckillOrderDO seckillOrderDO);
+
+    SeckillOrderDetailVO getSeckillOrderDetailVOByIdAndUsername(Long orderId, String username);
 }

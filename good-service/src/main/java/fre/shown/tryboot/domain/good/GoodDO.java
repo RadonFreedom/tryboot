@@ -1,7 +1,8 @@
-package fre.shown.tryboot.domain;
+package fre.shown.tryboot.domain.good;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.sql.Timestamp;
 
 /**

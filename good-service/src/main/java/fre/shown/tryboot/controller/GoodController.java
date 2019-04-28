@@ -1,7 +1,8 @@
 package fre.shown.tryboot.controller;
 
-import fre.shown.tryboot.domain.SeckillGoodDTO;
-import fre.shown.tryboot.domain.SeckillGoodVO;
+import fre.shown.tryboot.domain.ResultVO;
+import fre.shown.tryboot.domain.good.SeckillGoodDTO;
+import fre.shown.tryboot.domain.good.SeckillGoodDetailVO;
 import fre.shown.tryboot.service.GoodService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,13 +25,13 @@ public class GoodController {
         this.goodService = goodService;
     }
 
-    @GetMapping("/goods")
-    public List<SeckillGoodDTO> goods() {
+    @GetMapping("/good")
+    public List<SeckillGoodDTO> seckillGoods() {
         return goodService.getSeckillGoodsAsList();
     }
 
     @GetMapping("/good/{seckillGoodId}")
-    public SeckillGoodVO getSeckillGoodById(@PathVariable Long seckillGoodId) {
+    public ResultVO<SeckillGoodDetailVO> seckillGood(@PathVariable Long seckillGoodId) {
         return goodService.getSeckillGoodById(seckillGoodId);
     }
 }

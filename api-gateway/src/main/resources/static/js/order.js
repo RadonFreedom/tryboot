@@ -7,14 +7,14 @@ function getOrderDetail() {
 
     var seckillGoodId = g_getQueryString("orderId");
     $.ajax({
-        url: "/order?orderId=" + seckillGoodId,
+        url: "/order/" + seckillGoodId,
         type: "GET",
         headers: {'Authorization': 'Bearer ' + token},
-        success: function (data) {
-            if (data.success == true) {
-                render(data.data);
+        success: function (result) {
+            if (result.success == true) {
+                render(result.data);
             } else {
-                layer.msg(data.msg);
+                layer.msg(result.msg);
             }
         },
         error: function () {
@@ -24,19 +24,16 @@ function getOrderDetail() {
 }
 
 function render(data) {
-    var good = data.good;
-    var order = data.order;
-    $("#goodName").text(good.goodName);
-    $("#goodImg").attr("src", good.goodImg);
-    $("#goodPrice").text(order.seckillPrice);
-    $("#orderPrice").text(order.seckillPrice);
-    $("#createDate").text(new Date(order.gmtCreate).format("yyyy-MM-dd hh:mm:ss"));
+    $("#goodName").text(data.goodName);
+    $("#goodImg").attr("src", data.goodImg);
+    $("#goodPrice").text(data.goodPrice);
+    $("#orderPrice").text(data.seckillPrice);
+    $("#createDate").text(new Date(data.gmtCreate).format("yyyy-MM-dd hh:mm:ss"));
     var status = "";
-    if (order.status == 0) {
+    if (data.status == 0) {
         status = "未支付"
-    } else if (order.status == 1) {
+    } else if (data.status == 1) {
         status = "待发货";
     }
     $("#orderStatus").text(status);
-
 }

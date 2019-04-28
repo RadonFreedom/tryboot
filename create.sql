@@ -74,11 +74,13 @@ CREATE TABLE `seckill_order`
 (
     `id`               bigint unsigned NOT NULL AUTO_INCREMENT,
     username           varchar(20)     NOT NULL,
-    `seckill_good_id`  bigint(20)     DEFAULT NULL COMMENT '商品ID',
+    seckill_good_id    bigint(20)     DEFAULT NULL COMMENT '商品ID',
+    good_id            bigint(20)     DEFAULT NULL COMMENT '商品ID',
     `delivery_info_id` bigint(20)     DEFAULT NULL COMMENT '收获地址ID',
     `good_name`        varchar(16)    DEFAULT NULL COMMENT '冗余过来的商品名称',
     `good_count`       int(11)        DEFAULT '0' COMMENT '商品数量',
     `good_price`       decimal(10, 2) DEFAULT '0.00' COMMENT '商品单价',
+    seckill_price      decimal(10, 2) DEFAULT '0.00' COMMENT '秒杀价',
     `order_channel`    tinyint(4)     DEFAULT '0' COMMENT '1pc，2android，3ios',
     `status`           tinyint(4)     DEFAULT '0' COMMENT '订单状态，0新建未支付，1已支付，2已发货，3已收货，4已退款，5已完成',
     gmt_create         datetime       default CURRENT_TIMESTAMP COMMENT '订单的创建时间',
@@ -88,9 +90,6 @@ CREATE TABLE `seckill_order`
     UNIQUE KEY `uk_good_id_username` (seckill_good_id, `username`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
-
-
-
 
 
 

@@ -28,27 +28,3 @@ function getOauthTokenFromStorage() {
 function removeOauthTokenFromStorage() {
     return localStorage.removeItem('token');
 }
-
-function getCurrentAccount() {
-
-    var token = getOauthTokenFromStorage();
-    var account = null;
-
-    if (token) {
-        $.ajax({
-            url: 'order/current',
-            datatype: 'json',
-            type: 'get',
-            headers: {'Authorization': 'Bearer ' + token},
-            async: false,
-            success: function (data) {
-                account = data;
-            },
-            error: function () {
-                removeOauthTokenFromStorage();
-            }
-        });
-    }
-
-    return account;
-}
