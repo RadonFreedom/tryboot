@@ -1,7 +1,7 @@
-show variables like 'character%';
-set character_set_database = utf8mb4;
-set character_set_server = utf8mb4;
-show variables like '%time_zone%';
+# show variables like 'character%';
+# set character_set_database = utf8mb4;
+# set character_set_server = utf8mb4;
+# show variables like '%time_zone%';
 
 # create database if not exists auth_service;
 # use auth_service;
@@ -93,60 +93,60 @@ CREATE TABLE `seckill_order`
 
 
 
-DROP TABLE IF EXISTS `seckill_message`;
-CREATE TABLE `seckill_message`
-(
-    `id`           bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '消息主键',
-    `message_id`   bigint(20)      NOT NULL COMMENT '分布式id',
-    `content`      text COMMENT '消息内容',
-    `create_time`  date           DEFAULT NULL COMMENT '创建时间',
-    `status`       int(1)          NOT NULL COMMENT '1 有效 2 失效 ',
-    `over_time`    datetime       DEFAULT NULL COMMENT '结束时间',
-    `message_type` int(1)         DEFAULT '3' COMMENT '0 秒杀消息 1 购买消息 2 推送消息',
-    `send_type`    int(1)         DEFAULT '3' COMMENT '发送类型 0 app 1 pc 2 ios',
-    `good_name`    varchar(50)    DEFAULT '' COMMENT '商品名称',
-    `price`        decimal(10, 2) DEFAULT '0.00' COMMENT '商品价格',
-    gmt_create     datetime       default CURRENT_TIMESTAMP COMMENT '更新时间',
-    gmt_modified   datetime       default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;
-
-INSERT INTO `seckill_message`
-VALUES ('1', '533324506110885888', '尊敬的用户你好，你已经成功注册！', null, '0', null, null, '0', null, null);
-INSERT INTO `seckill_message`
-VALUES ('2', '533324506110885888', '尊敬的用户你好，你已经成功注册！', null, '0', null, null, '0', null, null);
-INSERT INTO `seckill_message`
-VALUES ('3', '533324506110885888', '尊敬的用户你好，你已经成功注册！', '2019-01-11', '0', null, null, '0', null, null);
-INSERT INTO `seckill_message`
-VALUES ('4', '533324506110885888', '尊敬的用户你好，你已经成功注册！', '2019-01-11', '0', null, null, '0', null, null);
-
--- ----------------------------
--- Table structure for seckill_message_user
--- ----------------------------
-DROP TABLE IF EXISTS `seckill_message_user`;
-CREATE TABLE `seckill_message_user`
-(
-    `id`         bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '消息主键',
-    `user_id`    bigint(20)      NOT NULL,
-    `message_id` bigint(50)      NOT NULL,
-    `good_id`    int(20) DEFAULT NULL,
-    `order_id`   int(20) DEFAULT NULL,
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 15
-  DEFAULT CHARSET = utf8;
-
--- ----------------------------
--- Records of seckill_message_user
--- ----------------------------
-INSERT INTO `seckill_message_user`
-VALUES ('1', '1', '222', '22', '2');
-INSERT INTO `seckill_message_user`
-VALUES ('11', '22', '533324506110885888', null, null);
-INSERT INTO `seckill_message_user`
-VALUES ('12', '22', '533324506110885888', null, null);
-INSERT INTO `seckill_message_user`
-VALUES ('13', '22', '533324506110885888', null, null);
-INSERT INTO `seckill_message_user`
-VALUES ('14', '22', '533324506110885888', null, null);
+# DROP TABLE IF EXISTS `seckill_message`;
+# CREATE TABLE `seckill_message`
+# (
+#     `id`           bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '消息主键',
+#     `message_id`   bigint(20)      NOT NULL COMMENT '分布式id',
+#     `content`      text COMMENT '消息内容',
+#     `create_time`  date           DEFAULT NULL COMMENT '创建时间',
+#     `status`       int(1)          NOT NULL COMMENT '1 有效 2 失效 ',
+#     `over_time`    datetime       DEFAULT NULL COMMENT '结束时间',
+#     `message_type` int(1)         DEFAULT '3' COMMENT '0 秒杀消息 1 购买消息 2 推送消息',
+#     `send_type`    int(1)         DEFAULT '3' COMMENT '发送类型 0 app 1 pc 2 ios',
+#     `good_name`    varchar(50)    DEFAULT '' COMMENT '商品名称',
+#     `price`        decimal(10, 2) DEFAULT '0.00' COMMENT '商品价格',
+#     gmt_create     datetime       default CURRENT_TIMESTAMP COMMENT '更新时间',
+#     gmt_modified   datetime       default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+#     PRIMARY KEY (`id`)
+# ) ENGINE = InnoDB
+#   DEFAULT CHARSET = utf8;
+#
+# INSERT INTO `seckill_message`
+# VALUES ('1', '533324506110885888', '尊敬的用户你好，你已经成功注册！', null, '0', null, null, '0', null, null);
+# INSERT INTO `seckill_message`
+# VALUES ('2', '533324506110885888', '尊敬的用户你好，你已经成功注册！', null, '0', null, null, '0', null, null);
+# INSERT INTO `seckill_message`
+# VALUES ('3', '533324506110885888', '尊敬的用户你好，你已经成功注册！', '2019-01-11', '0', null, null, '0', null, null);
+# INSERT INTO `seckill_message`
+# VALUES ('4', '533324506110885888', '尊敬的用户你好，你已经成功注册！', '2019-01-11', '0', null, null, '0', null, null);
+#
+# -- ----------------------------
+# -- Table structure for seckill_message_user
+# -- ----------------------------
+# DROP TABLE IF EXISTS `seckill_message_user`;
+# CREATE TABLE `seckill_message_user`
+# (
+#     `id`         bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '消息主键',
+#     `user_id`    bigint(20)      NOT NULL,
+#     `message_id` bigint(50)      NOT NULL,
+#     `good_id`    int(20) DEFAULT NULL,
+#     `order_id`   int(20) DEFAULT NULL,
+#     PRIMARY KEY (`id`)
+# ) ENGINE = InnoDB
+#   AUTO_INCREMENT = 15
+#   DEFAULT CHARSET = utf8;
+#
+# -- ----------------------------
+# -- Records of seckill_message_user
+# -- ----------------------------
+# INSERT INTO `seckill_message_user`
+# VALUES ('1', '1', '222', '22', '2');
+# INSERT INTO `seckill_message_user`
+# VALUES ('11', '22', '533324506110885888', null, null);
+# INSERT INTO `seckill_message_user`
+# VALUES ('12', '22', '533324506110885888', null, null);
+# INSERT INTO `seckill_message_user`
+# VALUES ('13', '22', '533324506110885888', null, null);
+# INSERT INTO `seckill_message_user`
+# VALUES ('14', '22', '533324506110885888', null, null);

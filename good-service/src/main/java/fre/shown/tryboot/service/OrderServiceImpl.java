@@ -7,6 +7,8 @@ import fre.shown.tryboot.domain.order.SeckillGoodInfoDTO;
 import fre.shown.tryboot.domain.order.SeckillOrderDO;
 import fre.shown.tryboot.domain.order.SeckillOrderDTO;
 import fre.shown.tryboot.domain.order.SeckillOrderDetailVO;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +23,7 @@ public class OrderServiceImpl implements OrderService {
     private final SeckillOrderDAO seckillOrderDAO;
     private final GoodDAO goodDAO;
 
-    public OrderServiceImpl(SeckillOrderDAO seckillOrderDAO, GoodDAO goodDAO) {
+    public OrderServiceImpl(SeckillOrderDAO seckillOrderDAO, GoodDAO goodDAO, RedisConnectionFactory redisConnectionFactory) {
         this.seckillOrderDAO = seckillOrderDAO;
         this.goodDAO = goodDAO;
     }
@@ -59,7 +61,13 @@ public class OrderServiceImpl implements OrderService {
         seckillOrderDO.setGoodPrice(seckillGoodInfoDTO.getGoodPrice());
         seckillOrderDO.setStatus(0);
 
-        seckillOrderDAO.addOrder(seckillOrderDO);
+        try {
+            seckillOrderDAO.addOrder(seckillOrderDO);
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            result.setErrorMsg("库存不足, 秒杀失败!");
+            return result;
+        }
 
         result.setSuccecssData(seckillOrderDO.getId());
         return result;

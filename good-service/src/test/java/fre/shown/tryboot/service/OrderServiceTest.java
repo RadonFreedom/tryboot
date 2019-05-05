@@ -32,5 +32,4 @@ public class OrderServiceTest {
         System.out.println(orderService.getSeckillOrderDetailVOBySeckillOrderIdAndUsername(1L, "radon"));
         System.out.println(orderService.getSeckillOrderDetailVOBySeckillOrderIdAndUsername(1L, ""));
     }
-
 }

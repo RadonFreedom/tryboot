@@ -39,7 +39,6 @@ public class GoodServiceImpl implements GoodService {
 
         SeckillGoodDetailVO seckillGoodDetailVO = new SeckillGoodDetailVO(seckillGoodDTO);
 
-
         long seckillStartAt = seckillGoodDetailVO.getStartDate().getTime();
         long seckillEndAt = seckillGoodDetailVO.getEndDate().getTime();
         long now = System.currentTimeMillis();
