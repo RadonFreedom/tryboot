@@ -17,9 +17,11 @@ import java.util.List;
 public class GoodServiceImpl implements GoodService {
 
     private final GoodDAO goodDAO;
+    private final RedisService redisService;
 
-    public GoodServiceImpl(GoodDAO goodDAO) {
+    public GoodServiceImpl(GoodDAO goodDAO, RedisService redisService) {
         this.goodDAO = goodDAO;
+        this.redisService = redisService;
     }
 
     @Override
@@ -31,10 +33,20 @@ public class GoodServiceImpl implements GoodService {
     public ResultVO<SeckillGoodDetailVO> getSeckillGoodById(Long seckillGoodId) {
 
         ResultVO<SeckillGoodDetailVO> resultVO = new ResultVO<>();
-        SeckillGoodDTO seckillGoodDTO = goodDAO.getSeckillGoodById(seckillGoodId);
 
-        if (seckillGoodDTO == null || seckillGoodDTO.getId() == null) {
+        Boolean hasKey = redisService.hasKey(seckillGoodId, SeckillGoodDTO.class);
+        SeckillGoodDTO seckillGoodDTO;
+        if (hasKey) {
+            seckillGoodDTO = redisService.get(seckillGoodId, SeckillGoodDTO.class);
+        }  else {
+            seckillGoodDTO = goodDAO.getSeckillGoodById(seckillGoodId);
+        }
+
+        if (seckillGoodDTO == null) {
             resultVO.setErrorMsg("商品信息不存在!");
+            return resultVO;
+        } else if (!hasKey) {
+            redisService.set(seckillGoodId, seckillGoodDTO);
         }
 
         SeckillGoodDetailVO seckillGoodDetailVO = new SeckillGoodDetailVO(seckillGoodDTO);

@@ -4,6 +4,7 @@ import fre.shown.tryboot.domain.ResultVO;
 import fre.shown.tryboot.domain.order.SeckillOrderDTO;
 import fre.shown.tryboot.domain.order.SeckillOrderDetailVO;
 import fre.shown.tryboot.service.OrderService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +32,16 @@ public class OrderController {
     public ResultVO<Long> seckill(Principal principal, SeckillOrderDTO seckillOrderDTO) {
 
         seckillOrderDTO.setUsername(principal.getName());
-        return orderService.createSeckillOrder(seckillOrderDTO);
+        ResultVO<Long> result;
+        try {
+            result = orderService.createSeckillOrder(seckillOrderDTO);
+            return result;
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            result = new ResultVO<>();
+            result.setErrorMsg("秒杀失败, 您可能在其他地方登录并参与了秒杀!");
+            return result;
+        }
     }
 
     @PreAuthorize("#oauth2.hasScope('ui') and hasAnyAuthority('ROLE_USER')")
