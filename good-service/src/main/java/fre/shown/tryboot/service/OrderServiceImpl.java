@@ -129,6 +129,7 @@ public class OrderServiceImpl implements OrderService {
         redisService.set(key, result);
     }
 
+
     @Override
     @SuppressWarnings("unchecked")
     public ResultVO<Long> getSeckillResult(String username, Long seckillGoodId) {
