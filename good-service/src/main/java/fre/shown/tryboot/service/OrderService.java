@@ -11,7 +11,10 @@ import fre.shown.tryboot.domain.order.SeckillOrderDetailVO;
 
 public interface OrderService {
 
+    ResultVO<Object> trySeckill(SeckillOrderDTO seckillOrderDTO);
+
+    ResultVO<Long> getSeckillResult(String username, Long seckillGoodId);
+
     ResultVO<SeckillOrderDetailVO> getSeckillOrderDetailVOBySeckillOrderIdAndUsername(Long orderId, String username);
 
-    ResultVO<Long> createSeckillOrder(SeckillOrderDTO seckillOrderDTO);
 }

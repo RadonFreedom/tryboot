@@ -14,7 +14,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableDiscoveryClient
 @SpringBootApplication
 public class GoodServiceApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(GoodServiceApplication.class, args);
     }

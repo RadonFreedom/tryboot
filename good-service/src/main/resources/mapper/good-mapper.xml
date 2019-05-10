@@ -78,6 +78,14 @@
         where id = #{seckillGoodId}
           and stock_count >= #{goodCnt}
     </update>
+
+    <select id="hasStock" resultType="Integer">
+        select stock_count
+        from seckill_good
+        where id = #{seckillGoodId}
+          and stock_count > 0
+    </select>
+
     <!--    SeckillGoodInfoDTO getSeckillGoodInfoById(Long seckillGoodId);-->
     <select id="getSeckillGoodInfoById" resultType="fre.shown.tryboot.domain.order.SeckillGoodInfoDTO">
         select good_id, good_price, good_name, seckill_price

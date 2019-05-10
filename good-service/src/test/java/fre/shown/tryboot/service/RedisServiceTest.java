@@ -1,6 +1,7 @@
 package fre.shown.tryboot.service;
 
 import fre.shown.tryboot.domain.order.SeckillOrderDTO;
+import fre.shown.tryboot.service.redis.RedisService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

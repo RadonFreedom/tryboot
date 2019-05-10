@@ -29,19 +29,16 @@ public class OrderController {
 
     @PreAuthorize("#oauth2.hasScope('ui') and hasAnyAuthority('ROLE_USER')")
     @PostMapping("/seckill")
-    public ResultVO<Long> seckill(Principal principal, SeckillOrderDTO seckillOrderDTO) {
+    public ResultVO<Object> seckill(Principal principal, SeckillOrderDTO seckillOrderDTO) {
 
         seckillOrderDTO.setUsername(principal.getName());
-        ResultVO<Long> result;
-        try {
-            result = orderService.createSeckillOrder(seckillOrderDTO);
-            return result;
-        } catch (DataIntegrityViolationException e) {
-            e.printStackTrace();
-            result = new ResultVO<>();
-            result.setErrorMsg("秒杀失败, 您可能在其他地方登录并参与了秒杀!");
-            return result;
-        }
+        return orderService.trySeckill(seckillOrderDTO);
+    }
+
+    @PreAuthorize("#oauth2.hasScope('ui') and hasAnyAuthority('ROLE_USER')")
+    @PostMapping("/seckill/result")
+    public ResultVO<Long> getSeckillResult(Principal principal, Long seckillGoodId) {
+        return orderService.getSeckillResult(principal.getName(), seckillGoodId);
     }
 
     @PreAuthorize("#oauth2.hasScope('ui') and hasAnyAuthority('ROLE_USER')")

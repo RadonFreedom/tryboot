@@ -2,10 +2,6 @@ spring:
   application:
     name: auth-service
 
-# 实际部署为本地redis
-#  redis:
-#    host: 47.107.38.165
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/auth_service?serverTimezone=Asia/Shanghai

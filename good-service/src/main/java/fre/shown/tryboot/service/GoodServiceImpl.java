@@ -4,6 +4,7 @@ import fre.shown.tryboot.dao.GoodDAO;
 import fre.shown.tryboot.domain.ResultVO;
 import fre.shown.tryboot.domain.good.SeckillGoodDTO;
 import fre.shown.tryboot.domain.good.SeckillGoodDetailVO;
+import fre.shown.tryboot.service.redis.RedisService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

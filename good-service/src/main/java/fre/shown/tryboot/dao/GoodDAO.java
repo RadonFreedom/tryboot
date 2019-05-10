@@ -12,11 +12,13 @@ import java.util.List;
 
 public interface GoodDAO {
 
-    SeckillGoodDTO getSeckillGoodById(Long seckillGoodId);
-
     List<SeckillGoodDTO> getSeckillGoodsAsList();
 
+    SeckillGoodDTO getSeckillGoodById(Long seckillGoodId);
+
     Boolean reduceSeckillGoodStock(Long seckillGoodId, Integer goodCnt);
+
+    Integer hasStock(Long seckillGoodId);
 
     SeckillGoodInfoDTO getSeckillGoodInfoById(Long seckillGoodId);
 }

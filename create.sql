@@ -1,22 +1,23 @@
-# show variables like 'character%';
-# set character_set_database = utf8mb4;
-# set character_set_server = utf8mb4;
-# show variables like '%time_zone%';
+show variables like 'character%';
+set character_set_database = utf8mb4;
+set character_set_server = utf8mb4;
+show variables like '%time_zone%';
 
-# create database if not exists auth_service;
-# use auth_service;
-#
-# drop table if exists user;
-# create table user
-# (
-#     id           bigint unsigned NOT NULL AUTO_INCREMENT,
-#     username     varchar(50)     NOT NULL unique,
-#     password     varchar(60)     NOT NULL,
-#     email        varchar(50)     NOT NULL unique,
+create database if not exists auth_service;
+use auth_service;
+
+drop table if exists user;
+create table user
+(
+    id           bigint unsigned NOT NULL AUTO_INCREMENT,
+    username     varchar(50)     NOT NULL unique,
+    password     varchar(60)     NOT NULL,
+    email        varchar(50)     NOT NULL unique,
+    create_time  char(19)        not null,
 #     gmt_create   datetime default CURRENT_TIMESTAMP COMMENT '更新时间',
 #     gmt_modified datetime default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-#     PRIMARY KEY (id)
-# ) ENGINE = InnoDB;
+    PRIMARY KEY (id)
+) ENGINE = InnoDB;
 
 create database if not exists good_service;
 use good_service;
