@@ -147,7 +147,6 @@ public class OrderServiceImpl implements OrderService {
         return resultVO;
     }
 
-
     @Override
     public ResultVO<SeckillOrderDetailVO> getSeckillOrderDetailVOBySeckillOrderIdAndUsername(Long orderId, String username) {
         ResultVO<SeckillOrderDetailVO> resultVO = new ResultVO<>();
