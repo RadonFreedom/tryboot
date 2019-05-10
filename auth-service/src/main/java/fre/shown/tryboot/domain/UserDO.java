@@ -1,11 +1,10 @@
 package fre.shown.tryboot.domain;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 
 /**
@@ -21,57 +20,9 @@ public class UserDO implements UserDetails {
     private String username;
     private String password;
     private String email;
-    private String createTime;
+    private Timestamp gmtCreate;
 
     public UserDO() {
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        UserDO userDO = (UserDO) o;
-
-        return new EqualsBuilder()
-                .append(getId(), userDO.getId())
-                .append(getUsername(), userDO.getUsername())
-                .append(getPassword(), userDO.getPassword())
-                .append(getEmail(), userDO.getEmail())
-                .append(getCreateTime(), userDO.getCreateTime())
-                .isEquals();
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 37)
-                .append(getId())
-                .append(getUsername())
-                .append(getPassword())
-                .append(getEmail())
-                .append(getCreateTime())
-                .toHashCode();
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     @Override
@@ -89,25 +40,41 @@ public class UserDO implements UserDetails {
         return true;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     @Override
     public String getPassword() {
         return password;
+    }
+
+    public Timestamp getGmtCreate() {
+        return gmtCreate;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setGmtCreate(Timestamp gmtCreate) {
+        this.gmtCreate = gmtCreate;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     @Override
@@ -125,14 +92,4 @@ public class UserDO implements UserDetails {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "UserDO{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='[PROTECTED]" + '\'' +
-                ", email='" + email + '\'' +
-                ", createTime='" + createTime + '\'' +
-                '}';
-    }
 }

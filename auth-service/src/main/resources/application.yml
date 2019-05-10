@@ -50,14 +50,6 @@ security:
             - refresh_token
           scopes: ui
 
-        order-service:
-          client-id: order-service
-          secret: radon
-          authorized-grant-types:
-            - client_credentials
-            - refresh_token
-          scopes: server
-
         good-service:
           client-id: good-service
           secret: radon

@@ -25,7 +25,7 @@ public class OrderServiceImpl implements OrderService {
 
     private static final String NO_STOCK_SECKILL_GOOD_KEY_PREFIX = "no_stock";
     private static final String SECKILL_RESULT_KEY_PREFIX = "seckill_result";
-    private static final Object DUMMY = new Object();
+    private static final Object DUMMY = new ResultVO<>();
 
     private final SeckillOrderDAO seckillOrderDAO;
     private final GoodDAO goodDAO;
@@ -40,9 +40,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * 1. 在秒杀之前必须进入商品详情，故 Redis 已经存储了每个秒杀商品的库存信息. <br/>
-     * 2. 秒杀请求先访问 Redis 来判断库存是否充足, 如果是, 下一步; 否则返回失败. <br/>
-     * 3. 秒杀请求进入消息队列, 通知客户端轮询秒杀结果.
+     * 1. 秒杀请求先访问 Redis 判断是否有库存, 如果是, 下一步; 否则返回失败. <br/>
+     * 2. 秒杀请求进入消息队列, 通知客户端轮询秒杀结果.
      *
      * @param seckillOrderDTO 前端传入参数
      * @return 通知前端轮询秒杀结果，或者秒杀失败
@@ -62,9 +61,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * 1. 快速判断商品是否没有库存
-     * 2. 判断同一用户同一商品的订单是否存在，若是，在Redis保存秒杀结果并返回
-     * 3. 尝试减库存，如果失败，在Redis中保存结果并返回
+     * 1. 快速判断商品是否没有库存，若否，在Redis保存秒杀结果并返回 <br/>
+     * 2. 判断同一用户同一商品的订单是否存在，若是，在Redis保存秒杀结果并返回 <br/>
+     * 3. 尝试减库存，如果失败，在Redis中保存结果并返回 <br/>
      * 4. 尝试生成订单信息，如果失败，保存结果并抛出异常（为了让减库存操作回滚）
      *
      * @param seckillOrderDTO 从消息队列 {@link MqConfig#SECKILL_ORDER_QUEUE SECKILL_ORDER_QUEUE} 中取出下一个要生成的订单

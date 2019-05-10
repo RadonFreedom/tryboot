@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public Boolean addUser(@RequestBody UserDO userDO) {
+    public Boolean addUser(UserDO userDO) {
         return userService.addUser(userDO);
     }
 }

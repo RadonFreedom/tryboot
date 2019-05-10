@@ -2,7 +2,6 @@ package fre.shown.tryboot.service;
 
 import fre.shown.tryboot.dao.UserDAO;
 import fre.shown.tryboot.domain.UserDO;
-import fre.shown.tryboot.util.DateUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -76,7 +75,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public Boolean addUser(UserDO userDO) {
 
         try {
-            userDO.setCreateTime(DateUtils.getCurrentTime());
             String encodedPassword = passwordEncoder.encode(userDO.getPassword());
             userDO.setPassword(encodedPassword);
             userDAO.addUser(userDO);

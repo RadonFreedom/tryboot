@@ -42,8 +42,8 @@
 
     <!--void addUser(UserDO userDO);-->
     <insert id="addUser">
-        insert into user (username, password, email, create_time)
-        values (#{username}, #{password}, #{email}, #{createTime});
+        insert into user (username, password, email)
+        values (#{username}, #{password}, #{email});
     </insert>
 
     <!--void deleteUserByUsername(String username);-->

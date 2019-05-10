@@ -54,7 +54,7 @@ function register() {
         },
         success: function (result) {
             layer.close(holder);
-            if (result === true) {
+            if (result == true) {
                 requestOauthToken(username, password);
                 window.location.href="/goods.html";
             } else {
