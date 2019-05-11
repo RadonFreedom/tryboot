@@ -35,6 +35,8 @@ public class GoodServiceImpl implements GoodService {
 
         ResultVO<SeckillGoodDetailVO> resultVO = new ResultVO<>();
 
+
+
         Boolean hasKey = redisService.hasKey(seckillGoodId, SeckillGoodDTO.class);
         SeckillGoodDTO seckillGoodDTO;
         if (hasKey) {
