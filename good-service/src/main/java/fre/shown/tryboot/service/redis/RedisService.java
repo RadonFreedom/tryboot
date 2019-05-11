@@ -5,6 +5,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 /**
  * @author Radon Freedom
  * created at 2019.05.05 下午5:51
@@ -51,5 +53,16 @@ public class RedisService {
 
     public void delete(String key) {
         redisTemplate.delete(key);
+    }
+
+    /**
+     * 根据key的前缀删除所有键值对
+     * @param keyPrefix 键前缀
+     */
+    public void deleteKeysByPrefix(String keyPrefix) {
+        Set<String> keys = redisTemplate.keys(keyPrefix + "*");
+        if (keys != null) {
+            redisTemplate.delete(keys);
+        }
     }
 }

@@ -37,6 +37,9 @@ public class OrderServiceImpl implements OrderService {
         this.goodDAO = goodDAO;
         this.redisService = redisService;
         this.amqpTemplate = amqpTemplate;
+
+        redisService.deleteKeysByPrefix(NO_STOCK_SECKILL_GOOD_KEY_PREFIX);
+        redisService.deleteKeysByPrefix(SECKILL_RESULT_KEY_PREFIX);
     }
 
     /**
