@@ -114,6 +114,7 @@ public class OrderServiceImpl implements OrderService {
         seckillOrderDO.setGoodPrice(seckillGoodInfoDTO.getGoodPrice());
         seckillOrderDO.setStatus(0);
 
+
         try {
             seckillOrderDAO.addOrder(seckillOrderDO);
         } catch (DataIntegrityViolationException e) {
