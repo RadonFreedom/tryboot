@@ -18,10 +18,11 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 public class DaoConfig {
 
     @Bean
-    public RedisTemplate<String, Object> DORedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
 
         RedisTemplate<String, Object> DORedisTemplate = new RedisTemplate<>();
         DORedisTemplate.setConnectionFactory(redisConnectionFactory);
+        DORedisTemplate.setKeySerializer(RedisSerializer.string());
         DORedisTemplate.setValueSerializer(RedisSerializer.json());
         return DORedisTemplate;
     }

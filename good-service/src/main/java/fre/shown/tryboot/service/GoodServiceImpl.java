@@ -23,8 +23,6 @@ public class GoodServiceImpl implements GoodService {
     public GoodServiceImpl(GoodDAO goodDAO, RedisService redisService) {
         this.goodDAO = goodDAO;
         this.redisService = redisService;
-
-        redisService.deleteDOByPrefix(SeckillGoodDTO.class.getName());
     }
 
     @Override
@@ -37,10 +35,10 @@ public class GoodServiceImpl implements GoodService {
 
         ResultVO<SeckillGoodDetailVO> resultVO = new ResultVO<>();
 
-        Boolean hasKey = redisService.hasDO(seckillGoodId, SeckillGoodDTO.class);
+        Boolean hasKey = redisService.hasKey(seckillGoodId, SeckillGoodDTO.class);
         SeckillGoodDTO seckillGoodDTO;
         if (hasKey) {
-            seckillGoodDTO = redisService.getDOById(seckillGoodId, SeckillGoodDTO.class);
+            seckillGoodDTO = redisService.getById(seckillGoodId, SeckillGoodDTO.class);
         }  else {
             seckillGoodDTO = goodDAO.getSeckillGoodById(seckillGoodId);
         }
@@ -49,7 +47,7 @@ public class GoodServiceImpl implements GoodService {
             resultVO.setErrorMsg("商品信息不存在!");
             return resultVO;
         } else if (!hasKey) {
-            redisService.setDOById(seckillGoodId, seckillGoodDTO);
+            redisService.setById(seckillGoodId, seckillGoodDTO);
         }
 
         SeckillGoodDetailVO seckillGoodDetailVO = new SeckillGoodDetailVO(seckillGoodDTO);

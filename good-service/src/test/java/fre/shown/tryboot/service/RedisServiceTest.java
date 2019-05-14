@@ -21,7 +21,7 @@ public class RedisServiceTest {
     RedisService redisService;
 
     @Test
-    public void testGetAndSet() {
+    public void test() {
         SeckillOrderDTO seckillOrderDTO = new SeckillOrderDTO();
         seckillOrderDTO.setSeckillGoodId(1L);
         seckillOrderDTO.setGoodCnt(1);
@@ -30,7 +30,12 @@ public class RedisServiceTest {
         seckillOrderDTO.setDeliveryInfoId(1L);
 
 
-        redisService.setDOById(seckillOrderDTO.getSeckillGoodId(), seckillOrderDTO);
-        System.out.println(redisService.getDOById(seckillOrderDTO.getSeckillGoodId(), SeckillOrderDTO.class));
+        redisService.setById(seckillOrderDTO.getSeckillGoodId(), seckillOrderDTO);
+        System.out.println(redisService.getById(seckillOrderDTO.getSeckillGoodId(), SeckillOrderDTO.class));
+        //换了个KeySerializer一切迎刃而解
+        redisService.deleteKeysByPrefix(seckillOrderDTO.getClass().getName());
+
+        redisService.set("123", "1323r2tdaf");
+        System.out.println(redisService.get("123", String.class));
     }
 }

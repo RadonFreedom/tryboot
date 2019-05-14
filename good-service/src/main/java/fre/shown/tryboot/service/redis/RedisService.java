@@ -2,7 +2,6 @@ package fre.shown.tryboot.service.redis;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -16,83 +15,62 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class RedisService {
 
-    private final RedisTemplate<String, Object> DORedisTemplate;
-    private final StringRedisTemplate stringRedisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
-    public RedisService(@Qualifier("DORedisTemplate") RedisTemplate<String, Object> DORedisTemplate, StringRedisTemplate stringRedisTemplate) {
-        this.DORedisTemplate = DORedisTemplate;
-        this.stringRedisTemplate = stringRedisTemplate;
+    public RedisService(@Qualifier("redisTemplate") RedisTemplate<String, Object> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+        Set<String> keys = redisTemplate.keys("*");
+        if (keys != null) {
+            redisTemplate.delete(keys);
+        }
     }
 
-    public void setDOById(Long id, Object value) {
+    public void setById(Long id, Object value) {
         String key = value.getClass().getName() + id;
-        DORedisTemplate.opsForValue().set(key, value);
+        redisTemplate.opsForValue().set(key, value);
     }
 
-    public void setDO(String key, Object value) {
-        DORedisTemplate.opsForValue().set(key, value);
+    public void set(String key, Object value) {
+        redisTemplate.opsForValue().set(key, value);
+    }
+
+    public void set(String key, Object value, long timeout, TimeUnit unit) {
+        redisTemplate.opsForValue().set(key, value, timeout, unit);
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T getDOById(Long id, Class<T> clazz) {
+    public <T> T getById(Long id, Class<T> clazz) {
         String key = clazz.getName() + id;
-        return (T) DORedisTemplate.opsForValue().get(key);
+        return (T) redisTemplate.opsForValue().get(key);
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T getDO(String key, Class<T> clazz) {
-        return (T) DORedisTemplate.opsForValue().get(key);
+    public <T> T get(String key, Class<T> clazz) {
+        return (T) redisTemplate.opsForValue().get(key);
     }
 
-    public <T> Boolean hasDO(Long id, Class<T> clazz) {
+    public <T> Boolean hasKey(Long id, Class<T> clazz) {
         String key = clazz.getName() + id;
-        return DORedisTemplate.hasKey(key);
+        return redisTemplate.hasKey(key);
     }
 
-    public Boolean hasDO(String key) {
-        return DORedisTemplate.hasKey(key);
+    public Boolean hasKey(String key) {
+        return redisTemplate.hasKey(key);
     }
 
-    public void deleteDO(String key) {
-        DORedisTemplate.delete(key);
+    public void delete(String key) {
+        redisTemplate.delete(key);
     }
 
     /**
      * 根据key的前缀删除所有键值对
      *
-     * @param keyPattern 键前缀
+     * @param keyPrefix 键前缀
      */
-    public void deleteDOByPrefix(String keyPattern) {
-        Set<String> keys = DORedisTemplate.keys("*" + keyPattern + "*");
+    public void deleteKeysByPrefix(String keyPrefix) {
+        Set<String> keys = redisTemplate.keys(keyPrefix + "*");
         if (keys != null) {
-            DORedisTemplate.delete(keys);
-        }
-    }
-
-    public void setString(String key, String value) {
-        stringRedisTemplate.opsForValue().set(key, value);
-    }
-
-    public void setString(String key, String value, long timeout, TimeUnit unit) {
-        stringRedisTemplate.opsForValue().set(key, value, timeout, unit);
-    }
-
-    public String getString(String key) {
-        return stringRedisTemplate.opsForValue().get(key);
-    }
-
-    public Boolean hasString(String key) {
-        return stringRedisTemplate.hasKey(key);
-    }
-
-    public void deleteString(String key) {
-        stringRedisTemplate.delete(key);
-    }
-
-    public void deleteStringByPrefix(String keyPattern) {
-        Set<String> keys = stringRedisTemplate.keys("*" + keyPattern + "*");
-        if (keys != null) {
-            stringRedisTemplate.delete(keys);
+            redisTemplate.delete(keys);
         }
     }
 }
