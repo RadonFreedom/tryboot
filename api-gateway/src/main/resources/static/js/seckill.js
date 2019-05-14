@@ -1,31 +1,5 @@
 function refreshVerifyCode() {
-
-    const token = getOauthTokenFromStorage();
-    const seckillGoodId = $("#seckillGoodId").val();
-    $.ajax({
-        url: "/seckill/verifyCode",
-        type: "get",
-        headers: {'Authorization': 'Bearer ' + token},
-        data: {
-            seckillGoodId: seckillGoodId
-        },
-        success: function (result) {
-            if (result.success == true) {
-                $("#verifyCodeImg").attr("src", result.data);
-            } else {
-                layer.msg(result.msg);
-            }
-        },
-        error: function (xhr) {
-            if (xhr.status == "401") {
-                layer.msg("请先登录!");
-                window.location.href = "/login.html";
-            }
-            else {
-                layer.msg("客户端请求有误");
-            }
-        }
-    });
+    $("#verifyCodeImg").attr("src", "/seckill/verifyCode?seckillGoodId=" + $("#seckillGoodId").val());
 }
 
 function getSeckillPath() {
@@ -51,8 +25,8 @@ function getSeckillPath() {
                 refreshVerifyCode();
             }
         },
-        error: function () {
-            layer.msg("客户端请求有误");
+        error: function (xhr) {
+            checkError(xhr);
         }
     });
 }
@@ -78,13 +52,7 @@ function doSeckill(path, token) {
             }
         },
         error: function (xhr) {
-            if (xhr.status == "401") {
-                layer.msg("请先登录!");
-                window.location.href = "/login.html";
-            }
-            else {
-                layer.msg("客户端请求有误");
-            }
+            checkError(xhr);
         }
     });
 }
@@ -112,8 +80,7 @@ function getSeckillResult(token, seckillGoodId) {
                     } else {
                         window.location.href = "/order_detail.html?orderId=" + result.data;
                     }
-                }
-                else {
+                } else {
                     layer.msg("正在等待下单结果，请稍等...");
                     setTimeout(function () {
                         getSeckillResult(token, seckillGoodId);
@@ -124,8 +91,8 @@ function getSeckillResult(token, seckillGoodId) {
                 layer.msg(result.msg);
             }
         },
-        error: function () {
-            layer.msg("客户端请求有误");
+        error: function (xhr) {
+            checkError(xhr);
         }
     });
 }

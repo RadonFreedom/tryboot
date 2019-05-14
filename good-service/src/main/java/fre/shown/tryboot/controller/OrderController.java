@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 
 /**
@@ -28,9 +29,10 @@ public class OrderController {
     }
 
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/seckill/verifyCode")
-    public ResultVO<String> seckillVerifyCode(Principal principal, Long seckillGoodId) {
-        return orderService.getSeckillVerifyCode(principal.getName(), seckillGoodId);
+    public void seckillVerifyCode(Long seckillGoodId, HttpServletResponse response) {
+        orderService.getSeckillVerifyCode(seckillGoodId, response);
     }
 
     @PostMapping("/seckill/path")

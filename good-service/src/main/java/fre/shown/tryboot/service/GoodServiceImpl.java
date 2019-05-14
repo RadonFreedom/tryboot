@@ -24,7 +24,7 @@ public class GoodServiceImpl implements GoodService {
         this.goodDAO = goodDAO;
         this.redisService = redisService;
 
-        redisService.deleteKeysByPrefix(SeckillGoodDTO.class.getName());
+        redisService.deleteDOByPrefix(SeckillGoodDTO.class.getName());
     }
 
     @Override
@@ -37,7 +37,7 @@ public class GoodServiceImpl implements GoodService {
 
         ResultVO<SeckillGoodDetailVO> resultVO = new ResultVO<>();
 
-        Boolean hasKey = redisService.hasKey(seckillGoodId, SeckillGoodDTO.class);
+        Boolean hasKey = redisService.hasDO(seckillGoodId, SeckillGoodDTO.class);
         SeckillGoodDTO seckillGoodDTO;
         if (hasKey) {
             seckillGoodDTO = redisService.getDOById(seckillGoodId, SeckillGoodDTO.class);

@@ -4,6 +4,8 @@ import fre.shown.tryboot.domain.ResultVO;
 import fre.shown.tryboot.domain.order.SeckillOrderDTO;
 import fre.shown.tryboot.domain.order.SeckillOrderDetailVO;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @author Radon Freedom
  * created at 2019.04.27 下午5:16
@@ -12,7 +14,7 @@ import fre.shown.tryboot.domain.order.SeckillOrderDetailVO;
 public interface OrderService {
 
 
-    ResultVO<String> getSeckillVerifyCode(String username, Long seckillGoodId);
+    void getSeckillVerifyCode(Long seckillGoodId, HttpServletResponse response);
 
     ResultVO<String> getSeckillPath(String username, Long seckillGoodId, String verifyCode);
 

@@ -34,3 +34,13 @@ function getOauthTokenFromStorage() {
 function removeOauthTokenFromStorage() {
     return localStorage.removeItem('token');
 }
+
+function checkError (xhr) {
+    if (xhr.status == "401") {
+        layer.msg("请先登录!");
+        window.location.href = "/login.html";
+    }
+    else {
+        layer.msg("客户端请求有误");
+    }
+}

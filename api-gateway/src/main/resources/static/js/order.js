@@ -1,11 +1,7 @@
 function getOrderDetail() {
     var token = getOauthTokenFromStorage();
-    if (token == null) {
-        layer.msg("请先登录!");
-        window.location.href = "/login.html";
-    }
-
     var seckillGoodId = g_getQueryString("orderId");
+
     $.ajax({
         url: "/order/" + seckillGoodId,
         type: "GET",
@@ -18,13 +14,7 @@ function getOrderDetail() {
             }
         },
         error: function (xhr) {
-            if (xhr.status == "401") {
-                layer.msg("请先登录!");
-                window.location.href = "/login.html";
-            }
-            else {
-                layer.msg("客户端请求有误");
-            }
+            checkError(xhr);
         }
     });
 }

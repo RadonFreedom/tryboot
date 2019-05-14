@@ -9,11 +9,17 @@ import fre.shown.tryboot.domain.order.SeckillOrderDO;
 import fre.shown.tryboot.domain.order.SeckillOrderDTO;
 import fre.shown.tryboot.domain.order.SeckillOrderDetailVO;
 import fre.shown.tryboot.service.redis.RedisService;
+import fre.shown.tryboot.util.CaptchaUtils;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.script.ScriptException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Radon Freedom
@@ -28,6 +34,10 @@ public class OrderServiceImpl implements OrderService {
     private static final String NO_STOCK_SECKILL_GOOD_KEY_PREFIX = "no_stock";
     private static final String SECKILL_RESULT_KEY_PREFIX = "seckill_result";
 
+    private static final long TIMEOUT_SECS_30 = 30;
+    private static final long TIMEOUT_SECS_1 = 1;
+    private static final TimeUnit SEC = TimeUnit.SECONDS;
+
     private static final String DUMMY = "";
 
     private final SeckillOrderDAO seckillOrderDAO;
@@ -41,25 +51,27 @@ public class OrderServiceImpl implements OrderService {
         this.redisService = redisService;
         this.amqpTemplate = amqpTemplate;
 
-        redisService.deleteKeysByPrefix(VERIFY_CODE_PREFIX);
-        redisService.deleteKeysByPrefix(SECKILL_PATH_PREFIX);
-        redisService.deleteKeysByPrefix(NO_STOCK_SECKILL_GOOD_KEY_PREFIX);
-        redisService.deleteKeysByPrefix(SECKILL_RESULT_KEY_PREFIX);
-        redisService.deleteKeysByPrefix(SeckillOrderDetailVO.class.getName());
+        redisService.deleteStringByPrefix(VERIFY_CODE_PREFIX);
+        redisService.deleteStringByPrefix(SECKILL_PATH_PREFIX);
+        redisService.deleteStringByPrefix(NO_STOCK_SECKILL_GOOD_KEY_PREFIX);
+
+        redisService.deleteDOByPrefix(SECKILL_RESULT_KEY_PREFIX);
+        redisService.deleteDOByPrefix(SeckillOrderDetailVO.class.getName());
     }
 
     @Override
-    public ResultVO<String> getSeckillVerifyCode(String username, Long seckillGoodId) {
+    public void getSeckillVerifyCode(Long seckillGoodId, HttpServletResponse response) {
 
-        ResultVO<String> result = new ResultVO<>();
+        String verifyCode;
+        try {
+            verifyCode = CaptchaUtils.createVerifyCode(response);
+        } catch (ScriptException | IOException e) {
+            e.printStackTrace();
+            return;
+        }
 
-        String key = VERIFY_CODE_PREFIX + username + seckillGoodId;
-        //TODO
-        String verifyCode = "1234";
-        redisService.setString(key, verifyCode);
-
-        result.setSuccecssData(verifyCode);
-        return result;
+        String key = VERIFY_CODE_PREFIX + seckillGoodId + verifyCode;
+        redisService.setString(key, "", TIMEOUT_SECS_30, SEC);
     }
 
     @Override
@@ -67,9 +79,8 @@ public class OrderServiceImpl implements OrderService {
 
         ResultVO<String> result = new ResultVO<>();
 
-        String verifyCodeKey = VERIFY_CODE_PREFIX + username + seckillGoodId;
-        String realCode = redisService.getString(verifyCodeKey);
-        if (realCode == null || !realCode.equals(verifyCode)) {
+        String verifyCodeKey = VERIFY_CODE_PREFIX + seckillGoodId + verifyCode;
+        if (!redisService.hasString(verifyCodeKey)) {
             result.setErrorMsg("验证码有误");
             return result;
         }
@@ -78,7 +89,7 @@ public class OrderServiceImpl implements OrderService {
 
         //TODO
         String path = "1234";
-        redisService.setString(pathKey, path);
+        redisService.setString(pathKey, path, TIMEOUT_SECS_1, SEC);
         result.setSuccecssData(path);
         return result;
     }
@@ -88,7 +99,7 @@ public class OrderServiceImpl implements OrderService {
      * 2. 秒杀请求进入消息队列, 通知客户端轮询秒杀结果.
      *
      * @param seckillOrderDTO 前端传入参数
-     * @param path 秒杀路径
+     * @param path            秒杀路径
      * @return 通知前端轮询秒杀结果，或者秒杀失败
      */
     @Override
@@ -103,8 +114,8 @@ public class OrderServiceImpl implements OrderService {
             return result;
         }
 
-        redisService.deleteKey(pathKey);
-        if (!redisService.hasKey(NO_STOCK_SECKILL_GOOD_KEY_PREFIX + seckillOrderDTO.getSeckillGoodId())) {
+        redisService.deleteString(pathKey);
+        if (!redisService.hasString(NO_STOCK_SECKILL_GOOD_KEY_PREFIX + seckillOrderDTO.getSeckillGoodId())) {
             amqpTemplate.convertAndSend(MqConfig.SECKILL_ORDER_QUEUE, seckillOrderDTO);
             result.setSuccess(true);
         } else {
@@ -128,7 +139,7 @@ public class OrderServiceImpl implements OrderService {
 
         ResultVO<Long> result = new ResultVO<>();
 
-        if (redisService.hasKey(NO_STOCK_SECKILL_GOOD_KEY_PREFIX + seckillOrderDTO.getSeckillGoodId())) {
+        if (redisService.hasString(NO_STOCK_SECKILL_GOOD_KEY_PREFIX + seckillOrderDTO.getSeckillGoodId())) {
             result.setErrorMsg("库存不足, 秒杀失败!");
             setSeckillResult(seckillOrderDTO.getUsername(), seckillOrderDTO.getSeckillGoodId(), result);
             return;
@@ -192,9 +203,9 @@ public class OrderServiceImpl implements OrderService {
         String key = SECKILL_RESULT_KEY_PREFIX + username + seckillGoodId;
         ResultVO<Long> resultVO;
 
-        if (redisService.hasKey(key)) {
+        if (redisService.hasDO(key)) {
             resultVO = redisService.getDO(key, ResultVO.class);
-            redisService.deleteKey(key);
+            redisService.deleteDO(key);
         } else {
             resultVO = new ResultVO<>();
             resultVO.setSuccess(true);
@@ -208,7 +219,7 @@ public class OrderServiceImpl implements OrderService {
         ResultVO<SeckillOrderDetailVO> resultVO = new ResultVO<>();
 
         SeckillOrderDetailVO orderDetailVO;
-        Boolean hasKey = redisService.hasKey(orderId, SeckillOrderDetailVO.class);
+        Boolean hasKey = redisService.hasDO(orderId, SeckillOrderDetailVO.class);
         if (hasKey) {
             orderDetailVO = redisService.getDOById(orderId, SeckillOrderDetailVO.class);
         } else {
