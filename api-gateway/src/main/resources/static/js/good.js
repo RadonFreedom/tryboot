@@ -73,9 +73,9 @@ function countDown() {
             clearTimeout(timeout);
         }
         $("#seckillTip").html("秒杀进行中");
-        // $("#verifyCodeImg").attr("src", "/seckill/verifyCode?goodId=" + $("#goodId").val());
-        // $("#verifyCodeImg").show();
-        // $("#verifyCode").show();
+        refreshVerifyCode();
+        $("#verifyCodeImg").show();
+        $("#verifyCode").show();
     } else {
         //秒杀已经结束
         $("#buyButton").attr("disabled", true);

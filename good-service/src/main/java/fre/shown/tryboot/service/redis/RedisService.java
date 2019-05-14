@@ -2,6 +2,7 @@ package fre.shown.tryboot.service.redis;
 
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Service;
 
@@ -15,54 +16,67 @@ import java.util.Set;
 @Service
 public class RedisService {
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, Object> stringObjectRedisTemplate;
+    private final StringRedisTemplate stringRedisTemplate;
 
-    public RedisService(RedisConnectionFactory redisConnectionFactory) {
-        this.redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory);
-        redisTemplate.setValueSerializer(RedisSerializer.json());
-        redisTemplate.afterPropertiesSet();
+    public RedisService(RedisConnectionFactory redisConnectionFactory, StringRedisTemplate stringRedisTemplate) {
+        this.stringRedisTemplate = stringRedisTemplate;
+        this.stringObjectRedisTemplate = new RedisTemplate<>();
+        stringObjectRedisTemplate.setConnectionFactory(redisConnectionFactory);
+        stringObjectRedisTemplate.setValueSerializer(RedisSerializer.json());
+        stringObjectRedisTemplate.afterPropertiesSet();
     }
 
-    public void set(Long id, Object value) {
-        String key = value.getClass().getName() + "_" + id;
-        redisTemplate.opsForValue().set(key, value);
+    public void setDOById(Long id, Object value) {
+        String key = value.getClass().getName() + id;
+        stringObjectRedisTemplate.opsForValue().set(key, value);
     }
 
-    public void set(String key, Object value) {
-        redisTemplate.opsForValue().set(key, value);
+    public void setDO(String key, Object value) {
+        stringObjectRedisTemplate.opsForValue().set(key, value);
     }
 
-    public <T> T get(Long id, Class<T> clazz) {
-        String key = clazz.getName() + "_" + id;
-        return (T) redisTemplate.opsForValue().get(key);
+    public void setString(String key, String value) {
+        stringRedisTemplate.opsForValue().set(key, value);
     }
 
-    public <T> T get(String key, Class<T> clazz) {
-        return (T) redisTemplate.opsForValue().get(key);
+    @SuppressWarnings("unchecked")
+    public <T> T getDOById(Long id, Class<T> clazz) {
+        String key = clazz.getName() + id;
+        return (T) stringObjectRedisTemplate.opsForValue().get(key);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T getDO(String key, Class<T> clazz) {
+        return (T) stringObjectRedisTemplate.opsForValue().get(key);
+    }
+
+    public String getString(String key) {
+        return stringRedisTemplate.opsForValue().get(key);
     }
 
     public <T> Boolean hasKey(Long id, Class<T> clazz) {
-        String key = clazz.getName() + "_" + id;
-        return redisTemplate.hasKey(key);
+        String key = clazz.getName() + id;
+        return stringObjectRedisTemplate.hasKey(key);
     }
 
     public Boolean hasKey(String key) {
-        return redisTemplate.hasKey(key);
+        return stringObjectRedisTemplate.hasKey(key);
     }
 
-    public void delete(String key) {
-        redisTemplate.delete(key);
+    public void deleteKey(String key) {
+        stringObjectRedisTemplate.delete(key);
     }
 
     /**
      * 根据key的前缀删除所有键值对
-     * @param keyPrefix 键前缀
+     *
+     * @param keyPattern 键前缀
      */
-    public void deleteKeysByPrefix(String keyPrefix) {
-        Set<String> keys = redisTemplate.keys(keyPrefix + "*");
+    public void deleteKeysByPrefix(String keyPattern) {
+        Set<String> keys = stringObjectRedisTemplate.keys("*" + keyPattern + "*");
         if (keys != null) {
-            redisTemplate.delete(keys);
+            stringObjectRedisTemplate.delete(keys);
         }
     }
 }

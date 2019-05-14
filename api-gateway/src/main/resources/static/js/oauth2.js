@@ -22,7 +22,13 @@ function requestOauthToken(username, password) {
 }
 
 function getOauthTokenFromStorage() {
-    return localStorage.getItem('token');
+    const token = localStorage.getItem('token');
+    if (token == null) {
+        layer.msg("请先登录!");
+        window.location.href = "/login.html";
+    } else {
+        return token;
+    }
 }
 
 function removeOauthTokenFromStorage() {

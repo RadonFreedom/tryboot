@@ -1,57 +1,67 @@
-// function getSeckillPath() {
-//     var goodId = $("#goodId").val();
-//     g_showLoading();
-//     $.ajax({
-//         url: "/seckill/path",
-//         type: "GET",
-//         data: {
-//             goodId: goodId,
-//             verifyCode: $("#verifyCode").val()
-//         },
-//         success: function (data) {
-//             if (data.code == 0) {
-//                 var path = data.data;
-//                 doSeckill(path);
-//             } else {
-//                 layer.msg(data.msg);
-//             }
-//         },
-//         error: function () {
-//             layer.msg("客户端请求有误");
-//         }
-//     });
-// }
+function refreshVerifyCode() {
 
-// function doSeckill(path) {
-//     $.ajax({
-//         url: "/seckill/" + path + "/do_seckill",
-//         type: "POST",
-//         data: {
-//             goodId: $("#goodId").val()
-//         },
-//         success: function (data) {
-//             if (data.code == 0) {
-//                 getSeckillResult($("#goodId").val());
-//             } else {
-//                 layer.msg(data.msg);
-//             }
-//         },
-//         error: function () {
-//             layer.msg("客户端请求有误");
-//         }
-//     });
-// }
-
-function doSeckill() {
-    var token = getOauthTokenFromStorage();
-    if (token == null) {
-        layer.msg("请先登录!");
-        window.location.href = "/login.html";
-    }
-
-    var seckillGoodId = $("#seckillGoodId").val();
+    const token = getOauthTokenFromStorage();
+    const seckillGoodId = $("#seckillGoodId").val();
     $.ajax({
-        url: "/seckill",
+        url: "/seckill/verifyCode",
+        type: "get",
+        headers: {'Authorization': 'Bearer ' + token},
+        data: {
+            seckillGoodId: seckillGoodId
+        },
+        success: function (result) {
+            if (result.success == true) {
+                $("#verifyCodeImg").attr("src", result.data);
+            } else {
+                layer.msg(result.msg);
+            }
+        },
+        error: function (xhr) {
+            if (xhr.status == "401") {
+                layer.msg("请先登录!");
+                window.location.href = "/login.html";
+            }
+            else {
+                layer.msg("客户端请求有误");
+            }
+        }
+    });
+}
+
+function getSeckillPath() {
+
+    const token = getOauthTokenFromStorage();
+    const seckillGoodId = $("#seckillGoodId").val();
+    const verifyCode = $("#verifyCode").val();
+    g_showLoading();
+    $.ajax({
+        url: "/seckill/path",
+        type: "POST",
+        headers: {'Authorization': 'Bearer ' + token},
+        data: {
+            seckillGoodId: seckillGoodId,
+            verifyCode: verifyCode
+        },
+        success: function (result) {
+            if (result.success == true) {
+                const path = result.data;
+                doSeckill(path, token);
+            } else {
+                layer.msg(result.msg);
+                refreshVerifyCode();
+            }
+        },
+        error: function () {
+            layer.msg("客户端请求有误");
+        }
+    });
+}
+
+function doSeckill(path, token) {
+
+    const seckillGoodId = $("#seckillGoodId").val();
+    $.ajax({
+        url: "/seckill/" + path,
         type: "POST",
         headers: {'Authorization': 'Bearer ' + token},
         data: {
@@ -118,8 +128,4 @@ function getSeckillResult(token, seckillGoodId) {
             layer.msg("客户端请求有误");
         }
     });
-}
-
-function refreshVerifyCode() {
-    $("#verifyCodeImg").attr("src", "/seckill/verifyCode?goodId=" + $("#goodId").val() + "&timestamp=" + new Date().getTime());
 }

@@ -30,7 +30,7 @@ public class RedisServiceTest {
         seckillOrderDTO.setDeliveryInfoId(1L);
 
 
-        redisService.set(seckillOrderDTO.getSeckillGoodId(), seckillOrderDTO);
-        System.out.println(redisService.get(seckillOrderDTO.getSeckillGoodId(), SeckillOrderDTO.class));
+        redisService.setDOById(seckillOrderDTO.getSeckillGoodId(), seckillOrderDTO);
+        System.out.println(redisService.getDOById(seckillOrderDTO.getSeckillGoodId(), SeckillOrderDTO.class));
     }
 }
