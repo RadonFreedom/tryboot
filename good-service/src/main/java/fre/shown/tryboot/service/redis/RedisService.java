@@ -1,9 +1,8 @@
 package fre.shown.tryboot.service.redis;
 
-import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -20,12 +19,9 @@ public class RedisService {
     private final RedisTemplate<String, Object> DORedisTemplate;
     private final StringRedisTemplate stringRedisTemplate;
 
-    public RedisService(RedisConnectionFactory redisConnectionFactory, StringRedisTemplate stringRedisTemplate) {
+    public RedisService(@Qualifier("DORedisTemplate") RedisTemplate<String, Object> DORedisTemplate, StringRedisTemplate stringRedisTemplate) {
+        this.DORedisTemplate = DORedisTemplate;
         this.stringRedisTemplate = stringRedisTemplate;
-        this.DORedisTemplate = new RedisTemplate<>();
-        DORedisTemplate.setConnectionFactory(redisConnectionFactory);
-        DORedisTemplate.setValueSerializer(RedisSerializer.json());
-        DORedisTemplate.afterPropertiesSet();
     }
 
     public void setDOById(Long id, Object value) {
@@ -36,6 +32,7 @@ public class RedisService {
     public void setDO(String key, Object value) {
         DORedisTemplate.opsForValue().set(key, value);
     }
+
     @SuppressWarnings("unchecked")
     public <T> T getDOById(Long id, Class<T> clazz) {
         String key = clazz.getName() + id;
