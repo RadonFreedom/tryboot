@@ -7,7 +7,6 @@ function getSeckillPath() {
     const token = getOauthTokenFromStorage();
     const seckillGoodId = $("#seckillGoodId").val();
     const verifyCode = $("#verifyCode").val();
-    g_showLoading();
     $.ajax({
         url: "/seckill/path",
         type: "POST",
@@ -49,6 +48,7 @@ function doSeckill(path, token) {
                 getSeckillResult(token, seckillGoodId);
             } else {
                 layer.msg(result.msg);
+                refreshVerifyCode();
             }
         },
         error: function (xhr) {

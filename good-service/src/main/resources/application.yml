@@ -28,11 +28,6 @@ eureka:
     serviceUrl:
       defaultZone: http://47.107.38.165:8763/eureka/,http://47.107.38.165:8762/eureka/
 
-logging:
-  level:
-    org.springframework.security: DEBUG
-#    com.netflix: DEBUG
-
 security:
   oauth2:
     client:

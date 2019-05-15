@@ -10,9 +10,13 @@ import fre.shown.tryboot.domain.order.SeckillOrderDTO;
 import fre.shown.tryboot.domain.order.SeckillOrderDetailVO;
 import fre.shown.tryboot.service.redis.RedisService;
 import fre.shown.tryboot.util.CaptchaUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,16 +39,19 @@ public class OrderServiceImpl implements OrderService {
     private static final String SECKILL_RESULT_KEY_PREFIX = "seckill_result";
 
     private static final long TIMEOUT_30_S = 30;
-    private static final long TIMEOUT_100_MS = 100;
+    private static final long TIMEOUT_300_MS = 300;
     private static final TimeUnit SEC = TimeUnit.SECONDS;
     private static final TimeUnit MILLIS = TimeUnit.MILLISECONDS;
 
     private static final String DUMMY = "";
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private final SeckillOrderDAO seckillOrderDAO;
     private final GoodDAO goodDAO;
     private final RedisService redisService;
     private final AmqpTemplate amqpTemplate;
+    private final PasswordEncoder pathEncoder = new BCryptPasswordEncoder();
 
     public OrderServiceImpl(SeckillOrderDAO seckillOrderDAO, GoodDAO goodDAO, RedisService redisService, AmqpTemplate amqpTemplate) {
         this.seckillOrderDAO = seckillOrderDAO;
@@ -82,9 +89,8 @@ public class OrderServiceImpl implements OrderService {
         redisService.delete(verifyCodeKey);
         String pathKey = SECKILL_PATH_PREFIX + username + seckillGoodId;
 
-        //TODO
-        String path = "1234";
-        redisService.set(pathKey, path, TIMEOUT_100_MS, MILLIS);
+        String path = pathEncoder.encode(username + seckillGoodId + verifyCode).replaceAll("/", "");
+        redisService.set(pathKey, path, TIMEOUT_300_MS, MILLIS);
         result.setSuccecssData(path);
         return result;
     }
@@ -104,6 +110,8 @@ public class OrderServiceImpl implements OrderService {
 
         String pathKey = SECKILL_PATH_PREFIX + seckillOrderDTO.getUsername() + seckillOrderDTO.getSeckillGoodId();
         String realPath = redisService.get(pathKey, String.class);
+        logger.debug("request path: " + path);
+        logger.debug("real path: " + realPath);
         if (realPath == null || !realPath.equals(path)) {
             result.setErrorMsg("请求有误！");
             return result;
