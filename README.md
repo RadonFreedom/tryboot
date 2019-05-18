@@ -1,14 +1,12 @@
-# tryboot
+# tryboot 秒杀系统
 
-tryboot 项目采用 [微服务架构 (microservice)](https://martinfowler.com/articles/microservices.html) 搭建，使用 spring boot, spring cloud 技术栈。
-
-本项目完成了简单的秒杀系统逻辑。
+tryboot 项目采用 [微服务架构 (microservice)](https://martinfowler.com/articles/microservices.html) 搭建，使用 spring boot, spring cloud 技术栈搭建了一个秒杀系统，可扩展性强。
 
 
 
 ## 架构划分
 
-请点击端口查看部署实例 !
+请点击端口查看部署实例 (由于我的服务器内存只有2GB，无法部署所有服务)
 
 |    服务名    |          功能简述           |                           部署端口                           | 实例个数 |
 | :----------: | :-------------------------: | :----------------------------------------------------------: | :------: |
