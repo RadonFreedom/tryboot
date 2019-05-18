@@ -3,6 +3,10 @@
 #      fail-fast: true
 #      uri: http://localhost:8888
 
+logging:
+  level:
+    org.springframework.security: DEBUG
+
 spring:
   application:
     name: good-service
