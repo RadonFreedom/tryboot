@@ -15,11 +15,15 @@ spring:
           uri: lb://good-service/
           predicates:
             - Path=/good/**, /seckill/**, /order/**
-#          filters:
-#            - RequestRateLimiter=10, 20, \#{@remoteAddrKeyResolver}
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 3
+                redis-rate-limiter.burstCapacity: 3
 
 server:
   port: 4000
+
 #  cloud:
 #    config:
 #      fail-fast: true

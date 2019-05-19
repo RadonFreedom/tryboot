@@ -260,13 +260,38 @@ where id = #{seckillGoodId}
 
 ### 数字验证码与秒杀地址隐藏
 
-设置数字图片验证码来验证用户身份，隐藏下单地址，防止恶意刷单
+设置数字图片验证码来验证用户身份，隐藏下单地址，防止恶意刷单。
 
 
 
 ### 限流操作
 
-在网关对请求秒杀路径进行限流操作，防止高并发导致服务器崩溃。
+在网关对IP地址进行限流操作，防止DoS攻击导致服务器崩溃。
+
+```yml
+spring:
+  cloud:
+    gateway:
+      routes:
+      	- id: good-service
+          uri: lb://good-service/
+          predicates:
+            - Path=/good/**, /seckill/**, /order/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 3
+                redis-rate-limiter.burstCapacity: 3
+```
+
+```java
+public class IpAddressKeyResolver implements KeyResolver {
+    @Override
+    public Mono<String> resolve(ServerWebExchange exchange) {
+        return Mono.just(exchange.getRequest().getRemoteAddress().getAddress().getHostAddress());
+    }
+}
+```
 
 
 
